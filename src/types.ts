@@ -9,7 +9,7 @@ export enum Days {
 }
 
 export interface Workout {
-    id: number;
+    id: string;
     title: string;
     day: Days;
     exercises: Exercise[];
@@ -18,7 +18,7 @@ export interface Workout {
 export type NewWorkout = Omit<Workout, 'id'>;
 
 export interface Exercise {
-    id: number;
+    id: string;
     name: string;
     sets?: string;
     reps?: string;

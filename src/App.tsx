@@ -15,9 +15,7 @@ const App = () => {
     const workouts = useAppSelector(state => state.workouts);
 
     const match = useMatch('/workouts/:id');
-    console.log(match?.params.id);
-    const workout = match ? workouts.find(workout => workout.id === Number(match.params.id)) : null;
-    console.log(`workout: ${JSON.stringify(workout)}`);
+    const workout = match ? workouts.find(workout => workout.id === match.params.id) : null;
 
     useEffect(() => {
         dispatch(initializeWorkouts());
