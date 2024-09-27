@@ -1,25 +1,15 @@
-import { useState, useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "../hooks";
-import { initializeWorkouts } from "../reducers/workoutReducer";
-import { Route, Routes, useMatch } from "react-router-dom";
-import { Days } from "../types";
+import { useState } from "react";
+import { Days, Workout } from "../types";
 import { Button, Divider, Modal } from "@mui/material";
 import { Link } from "react-router-dom";
 import WorkoutForm from "../components/WorkoutForm";
-import WorkoutPage from "./WorkoutPage";
 
-const Workouts = () => {
+interface WorkoutsProps {
+    workouts: Workout[];
+}
+
+const Workouts = ({ workouts }: WorkoutsProps) => {
     const [formOpen, setFormOpen] = useState<boolean>(false);
-
-    const dispatch = useAppDispatch();
-    const workouts = useAppSelector(state => state.workouts);
-
-    const match = useMatch('/workouts/:id');
-    const workout = match ? workouts.find(workout => workout.id === Number(match.params.id)) : null;
-
-    useEffect(() => {
-        dispatch(initializeWorkouts());
-    }, []);
 
     const handleOpenForm = () => setFormOpen(true);
     const handleCloseForm = () => setFormOpen(false);
@@ -53,10 +43,6 @@ const Workouts = () => {
             >
                 <WorkoutForm onSubmit={submitWorkout} />
             </Modal>
-
-            <Routes>
-                <Route path="/workouts/:id" element={<WorkoutPage workout={workout} />} />
-            </Routes>
         </div>
     );
 };
