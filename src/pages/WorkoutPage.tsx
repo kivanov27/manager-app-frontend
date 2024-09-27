@@ -1,12 +1,13 @@
 import { Workout } from "../types";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { useNavigate } from "react-router-dom";
 
 interface WorkoutPageProps {
     workout: Workout | null | undefined;
 }
 
 const WorkoutPage = ({ workout }: WorkoutPageProps) => {
-    console.log(workout);
+    const navigate = useNavigate();
 
     if (workout === null) {
         return <div>No workout found</div>
@@ -16,8 +17,8 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
     }
     else {
         return(
-            <div>
-                <ArrowBackIosNewIcon className="cursor-pointer" />
+            <div className="w-full">
+                <ArrowBackIosNewIcon className="cursor-pointer" onClick={() => navigate('/workouts')} />
                 <p>{workout.title}</p>
             </div>
         );
