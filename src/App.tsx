@@ -19,7 +19,7 @@ const App = () => {
 
     useEffect(() => {
         dispatch(initializeWorkouts());
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className="min-h-screen flex">
