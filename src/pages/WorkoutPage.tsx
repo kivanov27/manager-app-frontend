@@ -1,19 +1,35 @@
 import { Workout } from "../types";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useNavigate } from "react-router-dom";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Paper, TextField } from "@mui/material";
 
 interface WorkoutPageProps {
     workout: Workout | null | undefined;
 }
 
-const createData = ( name: string, sets: string, reps: string, duration: string, weight: string) => {
-    return { name, sets, reps, duration, weight };
-};
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+    borderColor: theme.palette.common.black,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+    color: theme.palette.common.white,
+    borderColor: theme.palette.common.black,
+  },
+}));
 
-const rows = [
-    createData('push up', '10', '10', '5min', '7kg')
-];
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+    color: theme.palette.common.white,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 const WorkoutPage = ({ workout }: WorkoutPageProps) => {
     const navigate = useNavigate();
@@ -29,37 +45,42 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
             <div className="w-full p-6">
                 <ArrowBackIosNewIcon className="cursor-pointer" onClick={() => navigate('/workouts')} />
                 <h2 className="text-center text-2xl mb-10">{workout.title}</h2>
-                <ul>
-                    {workout.exercises.map(exercise => (
-                        <li 
-                            key={exercise.id}
-                            className="list-disc list-inside"
-                        >
-                            {exercise.name} {exercise.sets}
-                        </li>
-                    ))}
-                </ul>
-
                 <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label='workout details' className='bg-[#474747]'>
-                        <TableHead className="text-white">
+                    <Table sx={{ minWidth: 650 }} size="small" aria-label='workout details' className='bg-[#474747]'>
+                        <TableHead>
                             <TableRow>
-                                <TableCell className="text-white">Exercise</TableCell>
-                                <TableCell align="right">Sets</TableCell>
-                                <TableCell align="right">Reps</TableCell>
-                                <TableCell align="right">Duration</TableCell>
-                                <TableCell align="right">Weight</TableCell>
+                                <StyledTableCell>Exercise</StyledTableCell>
+                                <StyledTableCell>Sets</StyledTableCell>
+                                <StyledTableCell>Reps</StyledTableCell>
+                                <StyledTableCell>Duration</StyledTableCell>
+                                <StyledTableCell>Weight</StyledTableCell>
+                                <StyledTableCell align="right">Actual Sets</StyledTableCell>
+                                <StyledTableCell align="right">Actual Reps</StyledTableCell>
+                                <StyledTableCell align="right">Actual Duration</StyledTableCell>
+                                <StyledTableCell align="right">Actual Weight</StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map(row => (
-                                <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                                    <TableCell component="th" scope="row">{row.name}</TableCell>
-                                    <TableCell align="right">{row.sets}</TableCell>
-                                    <TableCell align="right">{row.reps}</TableCell>
-                                    <TableCell align="right">{row.duration}</TableCell>
-                                    <TableCell align="right">{row.weight}</TableCell>
-                                </TableRow>
+                            {workout.exercises.map(exercise => (
+                                <StyledTableRow key={exercise.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                                    <StyledTableCell component="th" scope="exercise">{exercise.name}</StyledTableCell>
+                                    <StyledTableCell>{exercise.sets}</StyledTableCell>
+                                    <StyledTableCell>{exercise.reps}</StyledTableCell>
+                                    <StyledTableCell>{exercise.duration}</StyledTableCell>
+                                    <StyledTableCell>{exercise.weight}</StyledTableCell>
+                                    <StyledTableCell align="right">
+                                        <TextField id="txt-sets" variant="outlined" sx={{ input: { color: 'white' } }} className="w-20" />
+                                    </StyledTableCell>
+                                    <StyledTableCell align="right">
+                                        <TextField id="txt-reps" variant="outlined" sx={{ input: { color: 'white' } }} className="w-20" />
+                                    </StyledTableCell>
+                                    <StyledTableCell align="right">
+                                        <TextField id="txt-duration" variant="outlined" sx={{ input: { color: 'white' } }} className="w-20" />
+                                    </StyledTableCell>
+                                    <StyledTableCell align="right">
+                                        <TextField id="txt-weight" variant="outlined" sx={{ input: { color: 'white' } }} className="w-20" />
+                                    </StyledTableCell>
+                                </StyledTableRow>
                             ))}
                         </TableBody>
                     </Table>
