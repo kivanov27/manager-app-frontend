@@ -1,7 +1,9 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Workout } from "../types";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useNavigate } from "react-router-dom";
-import { styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Paper, TextField } from "@mui/material";
+import { styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Paper, TextField, Button, Modal } from "@mui/material";
+import ExerciseForm from "../components/ExerciseForm";
 
 interface WorkoutPageProps {
     workout: Workout | null | undefined;
@@ -32,7 +34,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const WorkoutPage = ({ workout }: WorkoutPageProps) => {
+    const [formOpen, setFormOpen] = useState<boolean>(false);
+
     const navigate = useNavigate();
+
+    const handleOpenForm = () => setFormOpen(true);
+    const handleCloseForm = () => setFormOpen(false);
 
     if (workout === null) {
         return <div>No workout found</div>
@@ -85,6 +92,17 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Button variant="outlined" sx={{ marginTop: '1rem', marginRight: '1rem' }}>add exercise</Button>
+                <Button variant="contained" sx={{ marginTop: '1rem', color: 'black' }} onClick={handleOpenForm}>record</Button>
+
+                <Modal
+                    open={formOpen}
+                    onClose={handleCloseForm}
+                    aria-labelledby="modal-exercise-form-title"
+                    aria-describedby="modal-exercise-form-description"
+                >
+                    <ExerciseForm />
+                </Modal>
             </div>
         );
     }
