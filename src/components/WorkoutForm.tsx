@@ -7,7 +7,7 @@ interface WorkoutFormProps {
 }
 
 const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -26,14 +26,12 @@ const WorkoutForm = forwardRef(({ onSubmit }: WorkoutFormProps, ref) => {
     const addWorkout = (e: React.SyntheticEvent) => {
         e.preventDefault();
         onSubmit({ title, day, exercises: [] });
-    }
+    };
 
     return (
         <Box sx={style} tabIndex={-1} ref={ref}>
             <form onSubmit={addWorkout} className="flex flex-col gap-4">
-                <Typography id="modal-workout-form-title" variant="h6" component="h2">
-                    Workout Form
-                </Typography>
+                <Typography id="modal-workout-form-title" variant="h6" component="h2">Workout Form</Typography>
                 <TextField required id="txt-title" label="Title" variant="outlined" onChange={({ target }) => setTitle(target.value)} />
                 <FormControl fullWidth>
                     <InputLabel id="select-day-label">Day</InputLabel>
