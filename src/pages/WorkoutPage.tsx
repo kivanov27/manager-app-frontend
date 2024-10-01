@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Workout } from "../types";
+import { NewExercise, Workout } from "../types";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Paper, TextField, Button, Modal } from "@mui/material";
 import ExerciseForm from "../components/ExerciseForm";
@@ -40,6 +40,10 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
 
     const handleOpenForm = () => setFormOpen(true);
     const handleCloseForm = () => setFormOpen(false);
+
+    const submitExercise = (values: NewExercise) => {
+        console.log(values);
+    };
 
     if (workout === null) {
         return <div>No workout found</div>
@@ -101,7 +105,7 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                     aria-labelledby="modal-exercise-form-title"
                     aria-describedby="modal-exercise-form-description"
                 >
-                    <ExerciseForm />
+                    <ExerciseForm onSubmit={submitExercise}/>
                 </Modal>
             </div>
         );

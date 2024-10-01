@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Days, Workout } from "../types";
+import { Days, NewWorkout, Workout } from "../types";
 import { Button, Divider, Modal } from "@mui/material";
 import { Link } from "react-router-dom";
 import WorkoutForm from "../components/WorkoutForm";
@@ -14,7 +14,9 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
     const handleOpenForm = () => setFormOpen(true);
     const handleCloseForm = () => setFormOpen(false);
 
-    const submitWorkout = () => {}
+    const submitWorkout = (values: NewWorkout) => {
+        console.log(values);
+    };
 
     return (
         <div className="w-full px-8 py-4">

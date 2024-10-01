@@ -1,6 +1,6 @@
 import { forwardRef, useState } from "react";
 import { NewExercise } from "../types";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 
 interface ExerciseFormProps {
     onSubmit(values: NewExercise): void;
@@ -28,16 +28,34 @@ const ExerciseForm = forwardRef(({ onSubmit }: ExerciseFormProps, ref) => {
     
     const addExercise = (e: React.SyntheticEvent) => {
         e.preventDefault();
-        onSubmit({ name, reps, sets, duration, weight });
+        if (name) {
+            onSubmit({
+                name: name,
+                reps: reps ?? undefined,
+                sets: sets ?? undefined,
+                duration: duration ?? undefined,
+                weight: weight ?? undefined,
+            });
+        }
+        else {
+            throw new Error('Exercise name missing');
+        }
     };
     
     return (
         <Box sx={style} tabIndex={-1} ref={ref}>
             <form onSubmit={addExercise} className="flex flex-col gap-4">
                 <Typography id="modal-exercise-form-title" variant="h6" component="h2">Exercise Form</Typography>
+                <TextField required id="txt-name" label="Name" variant="outlined" size="small" onChange={({ target }) => setName(target.value)} />
+                <TextField required id="txt-reps" label="Reps" variant="outlined" size="small" onChange={({ target }) => setReps(target.value)} />
+                <TextField required id="txt-sets" label="Sets" variant="outlined" size="small" onChange={({ target }) => setSets(target.value)} />
+                <TextField required id="txt-duration" label="Duration" variant="outlined" size="small" onChange={({ target }) => setDuration(target.value)} />
+                <TextField required id="txt-weight" label="Weight" variant="outlined" onChange={({ target }) => setWeight(target.value)} />
+                <Button variant="outlined" type="submit">submit</Button>
             </form>
         </Box>
     );
 });
 
+ExerciseForm.displayName = 'ExerciseForm';
 export default ExerciseForm;
