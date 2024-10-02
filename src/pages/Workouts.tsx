@@ -4,6 +4,7 @@ import { Button, Divider, Modal } from "@mui/material";
 import { Link } from "react-router-dom";
 import WorkoutForm from "../components/WorkoutForm";
 import { createWorkout } from "../reducers/workoutReducer";
+import { useAppDispatch } from "../hooks";
 
 interface WorkoutsProps {
     workouts: Workout[];
@@ -12,12 +13,13 @@ interface WorkoutsProps {
 const Workouts = ({ workouts }: WorkoutsProps) => {
     const [formOpen, setFormOpen] = useState<boolean>(false);
 
+    const dispatch = useAppDispatch();
+
     const openForm = () => setFormOpen(true);
     const closeForm = () => setFormOpen(false);
 
     const submitWorkout = (values: NewWorkout) => {
-        console.log(values);
-        createWorkout(values);
+        dispatch(createWorkout(values));
         closeForm();
     };
 
@@ -38,11 +40,11 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
                                 )
                             }
                         })}
-                        <Button variant="outlined" className="w-fit" onClick={openForm}>+ add workouts</Button>
                         <Divider orientation="horizontal" />
                     </li>
                 ))}
             </ul>
+            <Button variant="outlined" className="w-fit" onClick={openForm}>+ add workouts</Button>
 
             <Modal
                 open={formOpen}

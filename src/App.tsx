@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { Routes, Route, useMatch } from "react-router-dom";
-import { initializeWorkouts } from "./reducers/workoutReducer";
+import { initializeWorkouts, selectWorkouts } from "./reducers/workoutReducer";
 import SideNav from "./components/SideNav";
 import Home from "./pages/Home";
 import Workouts from "./pages/Workouts";
@@ -12,7 +12,7 @@ import WorkoutPage from "./pages/WorkoutPage";
 
 const App = () => {
     const dispatch = useAppDispatch();
-    const workouts = useAppSelector(state => state.workouts);
+    const workouts = useAppSelector(selectWorkouts);
 
     const match = useMatch('/workouts/:id');
     const workout = match ? workouts.find(workout => workout.id === match.params.id) : null;

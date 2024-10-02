@@ -4,6 +4,8 @@ import { NewExercise, Workout } from "../types";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Paper, TextField, Button, Modal } from "@mui/material";
 import ExerciseForm from "../components/ExerciseForm";
+import { useAppDispatch } from "../hooks";
+import { addExercise } from "../reducers/workoutReducer";
 
 interface WorkoutPageProps {
     workout: Workout | null | undefined;
@@ -35,21 +37,34 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const WorkoutPage = ({ workout }: WorkoutPageProps) => {
     const [formOpen, setFormOpen] = useState<boolean>(false);
+    const [isAddingExercise, setIsAddingExercise] = useState<boolean>(false);
 
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const openForm = () => setFormOpen(true);
     const closeForm = () => setFormOpen(false);
 
-    const submitExercise = (values: NewExercise) => {
-        console.log(values);
-        closeForm();
+    const submitExercise = async (values: NewExercise) => {
+        setIsAddingExercise(true);
+        if (workout) {
+            try {
+                await dispatch(addExercise(workout.id, values));
+                closeForm();
+            }
+            catch (error) {
+                console.error('Failed to add exercise:', error);
+            }
+            finally {
+                setIsAddingExercise(false);
+            }
+        }
     };
 
     if (workout === null) {
         return <div>No workout found</div>
     }
-    else if (workout === undefined) {
+    else if (workout === undefined || isAddingExercise) {
         return <div>Loading...</div>
     }
     else {
@@ -74,12 +89,17 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                         </TableHead>
                         <TableBody>
                             {workout.exercises.map(exercise => (
-                                <StyledTableRow key={exercise.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                                    <StyledTableCell component="th" scope="exercise">{exercise.name}</StyledTableCell>
-                                    <StyledTableCell>{exercise.sets}</StyledTableCell>
-                                    <StyledTableCell>{exercise.reps}</StyledTableCell>
-                                    <StyledTableCell>{exercise.duration}</StyledTableCell>
-                                    <StyledTableCell>{exercise.weight}</StyledTableCell>
+                                <StyledTableRow 
+                                    key={exercise.id ?? `temp-${exercise.name}`} 
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <StyledTableCell component="th" scope="exercise">
+                                        {exercise.name}
+                                    </StyledTableCell>
+                                    <StyledTableCell>{exercise.sets || '-'}</StyledTableCell>
+                                    <StyledTableCell>{exercise.reps || '-'}</StyledTableCell>
+                                    <StyledTableCell>{exercise.duration || '-'}</StyledTableCell>
+                                    <StyledTableCell>{exercise.weight || '-'}</StyledTableCell>
                                     <StyledTableCell align="right">
                                         <TextField id="txt-sets" variant="outlined" className="w-20" />
                                     </StyledTableCell>

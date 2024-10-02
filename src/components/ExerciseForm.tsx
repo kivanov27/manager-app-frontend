@@ -47,8 +47,8 @@ const ExerciseForm = forwardRef(({ onSubmit }: ExerciseFormProps, ref) => {
             <form onSubmit={addExercise} className="flex flex-col gap-4">
                 <Typography id="modal-exercise-form-title" variant="h6" component="h2" className="text-center">Exercise Form</Typography>
                 <TextField required id="txt-name" label="Name" variant="outlined" size="small" onChange={({ target }) => setName(target.value)} />
-                <TextField id="txt-reps" label="Reps" variant="outlined" size="small" onChange={({ target }) => setReps(target.value)} />
                 <TextField id="txt-sets" label="Sets" variant="outlined" size="small" onChange={({ target }) => setSets(target.value)} />
+                <TextField id="txt-reps" label="Reps" variant="outlined" size="small" onChange={({ target }) => setReps(target.value)} />
                 <TextField id="txt-duration" label="Duration" variant="outlined" size="small" onChange={({ target }) => setDuration(target.value)} />
                 <TextField id="txt-weight" label="Weight" variant="outlined" onChange={({ target }) => setWeight(target.value)} />
                 <Button variant="contained" type="submit" sx={{ color: "black" }}>submit</Button>

@@ -23,6 +23,12 @@ const WorkoutForm = forwardRef(({ onSubmit }: WorkoutFormProps, ref) => {
     const [title, setTitle] = useState<string>('');
     const [day, setDay] = useState<Days>(Days.Monday);
 
+    const handleDayChange = (value: string) => {
+        if (Object.values(Days).includes(value as Days)) {
+            setDay(value as Days);
+        }
+    };
+
     const addWorkout = (e: React.SyntheticEvent) => {
         e.preventDefault();
         onSubmit({ title, day, exercises: [] });
@@ -35,7 +41,14 @@ const WorkoutForm = forwardRef(({ onSubmit }: WorkoutFormProps, ref) => {
                 <TextField required id="txt-title" label="Title" variant="outlined" onChange={({ target }) => setTitle(target.value)} />
                 <FormControl fullWidth>
                     <InputLabel id="select-day-label">Day</InputLabel>
-                    <Select labelId="select-day-label" id="select-day" value={day} label="Day" sx={{ color: 'white' }} onChange={({ target }) => setDay(target.value as Days)}>
+                    <Select 
+                        labelId="select-day-label" 
+                        id="select-day" 
+                        value={day} 
+                        label="Day" 
+                        sx={{ color: 'white' }} 
+                        onChange={({ target }) => handleDayChange(target.value)}
+                    >
                         {Object.values(Days).map(day => (
                             <MenuItem key={day} value={day}>{day}</MenuItem>
                         ))}
