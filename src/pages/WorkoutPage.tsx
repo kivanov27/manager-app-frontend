@@ -38,11 +38,12 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
 
     const navigate = useNavigate();
 
-    const handleOpenForm = () => setFormOpen(true);
-    const handleCloseForm = () => setFormOpen(false);
+    const openForm = () => setFormOpen(true);
+    const closeForm = () => setFormOpen(false);
 
     const submitExercise = (values: NewExercise) => {
         console.log(values);
+        closeForm();
     };
 
     if (workout === null) {
@@ -80,32 +81,32 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                                     <StyledTableCell>{exercise.duration}</StyledTableCell>
                                     <StyledTableCell>{exercise.weight}</StyledTableCell>
                                     <StyledTableCell align="right">
-                                        <TextField id="txt-sets" variant="outlined" sx={{ input: { color: 'white' } }} className="w-20" />
+                                        <TextField id="txt-sets" variant="outlined" className="w-20" />
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
-                                        <TextField id="txt-reps" variant="outlined" sx={{ input: { color: 'white' } }} className="w-20" />
+                                        <TextField id="txt-reps" variant="outlined" className="w-20" />
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
-                                        <TextField id="txt-duration" variant="outlined" sx={{ input: { color: 'white' } }} className="w-20" />
+                                        <TextField id="txt-duration" variant="outlined" className="w-20" />
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
-                                        <TextField id="txt-weight" variant="outlined" sx={{ input: { color: 'white' } }} className="w-20" />
+                                        <TextField id="txt-weight" variant="outlined" className="w-20" />
                                     </StyledTableCell>
                                 </StyledTableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Button variant="outlined" sx={{ marginTop: '1rem', marginRight: '1rem' }}>add exercise</Button>
-                <Button variant="contained" sx={{ marginTop: '1rem', color: 'black' }} onClick={handleOpenForm}>record</Button>
+                <Button variant="outlined" sx={{ marginTop: '1rem', marginRight: '1rem' }} onClick={openForm}>add exercise</Button>
+                <Button variant="contained" sx={{ marginTop: '1rem', color: 'black' }}>record</Button>
 
                 <Modal
                     open={formOpen}
-                    onClose={handleCloseForm}
+                    onClose={closeForm}
                     aria-labelledby="modal-exercise-form-title"
                     aria-describedby="modal-exercise-form-description"
                 >
-                    <ExerciseForm onSubmit={submitExercise}/>
+                    <ExerciseForm onSubmit={submitExercise} />
                 </Modal>
             </div>
         );

@@ -3,6 +3,7 @@ import { Days, NewWorkout, Workout } from "../types";
 import { Button, Divider, Modal } from "@mui/material";
 import { Link } from "react-router-dom";
 import WorkoutForm from "../components/WorkoutForm";
+import { createWorkout } from "../reducers/workoutReducer";
 
 interface WorkoutsProps {
     workouts: Workout[];
@@ -11,11 +12,13 @@ interface WorkoutsProps {
 const Workouts = ({ workouts }: WorkoutsProps) => {
     const [formOpen, setFormOpen] = useState<boolean>(false);
 
-    const handleOpenForm = () => setFormOpen(true);
-    const handleCloseForm = () => setFormOpen(false);
+    const openForm = () => setFormOpen(true);
+    const closeForm = () => setFormOpen(false);
 
     const submitWorkout = (values: NewWorkout) => {
         console.log(values);
+        createWorkout(values);
+        closeForm();
     };
 
     return (
@@ -35,7 +38,7 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
                                 )
                             }
                         })}
-                        <Button variant="outlined" className="w-fit" onClick={handleOpenForm}>+ add workouts</Button>
+                        <Button variant="outlined" className="w-fit" onClick={openForm}>+ add workouts</Button>
                         <Divider orientation="horizontal" />
                     </li>
                 ))}
@@ -43,7 +46,7 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
 
             <Modal
                 open={formOpen}
-                onClose={handleCloseForm}
+                onClose={closeForm}
                 aria-labelledby="modal-workout-form-title"
                 aria-describedby="modal-workout-form-description"
             >

@@ -31,17 +31,17 @@ const WorkoutForm = forwardRef(({ onSubmit }: WorkoutFormProps, ref) => {
     return (
         <Box sx={style} tabIndex={-1} ref={ref}>
             <form onSubmit={addWorkout} className="flex flex-col gap-4">
-                <Typography id="modal-workout-form-title" variant="h6" component="h2">Workout Form</Typography>
+                <Typography id="modal-workout-form-title" variant="h6" component="h2" className="text-center">Workout Form</Typography>
                 <TextField required id="txt-title" label="Title" variant="outlined" onChange={({ target }) => setTitle(target.value)} />
                 <FormControl fullWidth>
                     <InputLabel id="select-day-label">Day</InputLabel>
-                    <Select labelId="select-day-label" id="select-day" value={day} label="Day" onChange={({ target }) => setDay(target.value as Days)}>
+                    <Select labelId="select-day-label" id="select-day" value={day} label="Day" sx={{ color: 'white' }} onChange={({ target }) => setDay(target.value as Days)}>
                         {Object.values(Days).map(day => (
                             <MenuItem key={day} value={day}>{day}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
-                <Button variant="contained" type="submit">submit</Button>
+                <Button variant="contained" type="submit" sx={{ color: 'black' }}>submit</Button>
             </form>
         </Box>
     );
