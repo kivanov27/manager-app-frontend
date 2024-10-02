@@ -35,8 +35,11 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
                                     <Link 
                                         key={workout.id} 
                                         to={`/workouts/${workout.id}`}
-                                        className="flex justify-center items-center p-1 border border-[#918a8a] rounded-s hover:border-[#dbd0d0] transition-colors duration-300 ease-out"
-                                    >{workout.title}</Link>
+                                        className="flex justify-center items-center p-1 border border-[#918a8a] rounded-[0.25rem] 
+                                        hover:border-[#dbd0d0] transition-colors duration-300 ease-out"
+                                    >
+                                        {workout.title}
+                                    </Link>
                                 )
                             }
                         })}

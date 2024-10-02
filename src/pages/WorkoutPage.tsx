@@ -29,13 +29,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     backgroundColor: theme.palette.action.hover,
     color: theme.palette.common.white,
   },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
 }));
 
 const WorkoutPage = ({ workout }: WorkoutPageProps) => {
+
     const [formOpen, setFormOpen] = useState<boolean>(false);
     const [isAddingExercise, setIsAddingExercise] = useState<boolean>(false);
 
@@ -76,41 +73,50 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                     <Table sx={{ minWidth: 650 }} size="small" aria-label='workout details' className='bg-[#474747]'>
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell>Exercise</StyledTableCell>
-                                <StyledTableCell>Sets</StyledTableCell>
-                                <StyledTableCell>Reps</StyledTableCell>
-                                <StyledTableCell>Duration</StyledTableCell>
-                                <StyledTableCell>Weight</StyledTableCell>
-                                <StyledTableCell align="right">Actual Sets</StyledTableCell>
-                                <StyledTableCell align="right">Actual Reps</StyledTableCell>
-                                <StyledTableCell align="right">Actual Duration</StyledTableCell>
-                                <StyledTableCell align="right">Actual Weight</StyledTableCell>
+                                {[
+                                    "Exercise",
+                                    "Sets",
+                                    "Reps",
+                                    "Duration",
+                                    "Weight",
+                                    "Actual Sets",
+                                    "Actual Reps",
+                                    "Actual Duration",
+                                    "Actual Weight"
+                                ].map((heading, index) => (
+                                    <StyledTableCell
+                                        key={heading}
+                                        align={index >= 5 ? "right" : "left"} // align right for last 4 columns
+                                        sx={index === 5 ? { borderLeft: '1px solid', borderColor: 'divider' } : {}}
+                                    >
+                                        {heading}
+                                    </StyledTableCell>
+                                ))}
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {workout.exercises.map(exercise => (
                                 <StyledTableRow 
                                     key={exercise.id ?? `temp-${exercise.name}`} 
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <StyledTableCell component="th" scope="exercise">
-                                        {exercise.name}
+                                        {exercise.name || 'Loading...'}
                                     </StyledTableCell>
                                     <StyledTableCell>{exercise.sets || '-'}</StyledTableCell>
                                     <StyledTableCell>{exercise.reps || '-'}</StyledTableCell>
                                     <StyledTableCell>{exercise.duration || '-'}</StyledTableCell>
                                     <StyledTableCell>{exercise.weight || '-'}</StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        <TextField id="txt-sets" variant="outlined" className="w-20" />
+                                    <StyledTableCell align="right" className="left-border">
+                                        <TextField id="txt-sets" variant="outlined" size="small" className="w-20" />
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
-                                        <TextField id="txt-reps" variant="outlined" className="w-20" />
+                                        <TextField id="txt-reps" variant="outlined" size="small" className="w-20" />
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
-                                        <TextField id="txt-duration" variant="outlined" className="w-20" />
+                                        <TextField id="txt-duration" variant="outlined" size="small" className="w-20" />
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
-                                        <TextField id="txt-weight" variant="outlined" className="w-20" />
+                                        <TextField id="txt-weight" variant="outlined" size="small" className="w-20" />
                                     </StyledTableCell>
                                 </StyledTableRow>
                             ))}
