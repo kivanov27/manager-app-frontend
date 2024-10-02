@@ -87,7 +87,7 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                                     <StyledTableCell
                                         key={heading}
                                         align={index >= 5 ? "right" : "left"} // align right for last 4 columns
-                                        sx={index === 5 ? { borderLeft: '1px solid', borderColor: 'divider' } : {}}
+                                        sx={index === 5 ? { borderLeft: '1px solid', borderColor: 'black' } : {}}
                                     >
                                         {heading}
                                     </StyledTableCell>
@@ -106,7 +106,7 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                                     <StyledTableCell>{exercise.reps || '-'}</StyledTableCell>
                                     <StyledTableCell>{exercise.duration || '-'}</StyledTableCell>
                                     <StyledTableCell>{exercise.weight || '-'}</StyledTableCell>
-                                    <StyledTableCell align="right" className="left-border">
+                                    <StyledTableCell align="right" sx={{ borderLeft: '1px solid' }}>
                                         <TextField id="txt-sets" variant="outlined" size="small" className="w-20" />
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
