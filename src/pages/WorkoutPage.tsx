@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NewExercise, Workout } from "../types";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Paper, TextField, Button, Modal } from "@mui/material";
+import { styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Paper, TextField, Button, Modal, InputAdornment } from "@mui/material";
 import ExerciseForm from "../components/ExerciseForm";
 import { useAppDispatch } from "../hooks";
 import { addExercise } from "../reducers/workoutReducer";
@@ -116,7 +116,17 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                                         <TextField id="txt-duration" variant="outlined" size="small" className="w-20" />
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
-                                        <TextField id="txt-weight" variant="outlined" size="small" className="w-20" />
+                                        <TextField 
+                                            id="txt-weight" 
+                                            variant="outlined" 
+                                            size="small" 
+                                            className="w-20"
+                                            slotProps={{
+                                                input: {
+                                                    endAdornment: <InputAdornment position="end" sx={{ color: 'white' }}>kg</InputAdornment>,
+                                                },
+                                            }}
+                                        />
                                     </StyledTableCell>
                                 </StyledTableRow>
                             ))}

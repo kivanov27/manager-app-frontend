@@ -49,6 +49,13 @@ const theme = createTheme({
                 },
             },
         },
+        MuiInputAdornment: {
+            styleOverrides: {
+                root: {
+                    color: '#ffffff',
+                },
+            },
+        },
         MuiSelect: {
             styleOverrides: {
                 root: {
