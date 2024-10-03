@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { useAppDispatch } from "../hooks";
+import { createWorkout, updateWorkout } from "../reducers/workoutReducer";
 import { Days, NewWorkout, Workout } from "../types";
+import WorkoutForm from "../components/WorkoutForm";
 import { Button, Divider, Modal } from "@mui/material";
 import { Link } from "react-router-dom";
-import WorkoutForm from "../components/WorkoutForm";
-import { createWorkout } from "../reducers/workoutReducer";
-import { useAppDispatch } from "../hooks";
+import EditIcon from '@mui/icons-material/Edit';
 
 interface WorkoutsProps {
     workouts: Workout[];
@@ -12,15 +13,33 @@ interface WorkoutsProps {
 
 const Workouts = ({ workouts }: WorkoutsProps) => {
     const [formOpen, setFormOpen] = useState<boolean>(false);
+    const [isEditMode, setIsEditMode] = useState<boolean>(false);
+    const [workoutToEdit, setWorkoutToEdit] = useState<Workout | null>(null);
 
     const dispatch = useAppDispatch();
 
-    const openForm = () => setFormOpen(true);
+    const openForm = () => {
+        setIsEditMode(false);
+        setWorkoutToEdit(null);
+        setFormOpen(true);
+    }
+
     const closeForm = () => setFormOpen(false);
 
     const submitWorkout = (values: NewWorkout) => {
-        dispatch(createWorkout(values));
+        if (isEditMode && workoutToEdit) {
+            dispatch(updateWorkout({ ...workoutToEdit, ...values }));
+        }
+        else {
+            dispatch(createWorkout(values));
+        }
         closeForm();
+    };
+
+    const editWorkout = (workout: Workout) => {
+        setWorkoutToEdit(workout);
+        setIsEditMode(true);
+        setFormOpen(true);
     };
 
     return (
@@ -32,18 +51,20 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
                         {workouts.map(workout => {
                             if (workout.day === day) {
                                 return (
-                                    <Link 
-                                        key={workout.id} 
-                                        to={`/workouts/${workout.id}`}
-                                        className="flex justify-center items-center p-1 border border-[#918a8a] rounded-[0.25rem] 
-                                        hover:border-[#dbd0d0] transition-colors duration-300 ease-out"
-                                    >
-                                        {workout.title}
-                                    </Link>
+                                    <div key={workout.id} className="flex gap-2">
+                                        <Button variant="outlined" className="w-full text-center p-1">
+                                            <Link to={`/workouts/${workout.id}`}>
+                                                {workout.title}
+                                            </Link>
+                                        </Button>
+                                        <Button variant="outlined" className="w-10" onClick={() => editWorkout(workout)}>
+                                            <EditIcon />
+                                        </Button>
+                                    </div>
                                 )
                             }
                         })}
-                        <Divider orientation="horizontal" />
+                        <Divider orientation="horizontal" sx={{ backgroundColor: 'black' }} />
                     </li>
                 ))}
             </ul>
@@ -55,7 +76,11 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
                 aria-labelledby="modal-workout-form-title"
                 aria-describedby="modal-workout-form-description"
             >
-                <WorkoutForm onSubmit={submitWorkout} />
+                <WorkoutForm
+                    onSubmit={submitWorkout}
+                    workoutToEdit={workoutToEdit}
+                    isEditMode={isEditMode}
+                />
             </Modal>
         </div>
     );

@@ -84,7 +84,28 @@ const createExercise = async (workoutId: string, object: NewExercise) => {
             throw new Error('An unknown error occurred');
         }
     }
-}
+};
 
-const workoutService = { getAll, getOne, create, createExercise };
+const update = async (id: string, updatedWorkout: Workout) => {
+    try {
+        const response = await axios.put<Workout>(`${apiBaseUrl}/workouts/${id}`, updatedWorkout);
+        return response.data;
+    }
+    catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            console.error('AxiosError:', error.response?.data || error.message);
+            throw error;
+        }
+        else if (error instanceof Error) {
+            console.error('Error adding exercise:', error.message);
+            throw error;
+        }
+        else {
+            console.error('Unknown error:', error);
+            throw new Error('An unknown error occurred');
+        }
+    }
+};
+
+const workoutService = { getAll, getOne, create, createExercise, update };
 export default workoutService;
