@@ -30,11 +30,14 @@ const workoutSlice = createSlice({
             if (index !== -1) {
                 state[index] = action.payload.workout;
             }
+        },
+        updateExerciseState(_state, _action: PayloadAction<{ workoutId: string, exercise: Exercise }>) {
+            // write this function
         }
     }
 });
 
-export const { setWorkouts, appendWorkout, appendExercise, updateWorkoutState } = workoutSlice.actions;
+export const { setWorkouts, appendWorkout, appendExercise, updateWorkoutState, updateExerciseState } = workoutSlice.actions;
 
 export const initializeWorkouts = () => {
     return async (dispatch: AppDispatch) => {
@@ -71,6 +74,22 @@ export const updateWorkout = (updatedWorkout: Workout) => {
             const result = await workoutService.update(updatedWorkout.id, updatedWorkout);
             if (result) {
                 dispatch(updateWorkoutState({ id: updatedWorkout.id, workout: result}));
+            }
+        }
+        catch (error) {
+            console.error('Failed to update:', error);
+            throw error;
+        }
+    };
+};
+
+export const updateExercise = (workoutId: string, updatedExercise: Exercise) => {
+    // make sure this works
+    return async (dispatch: AppDispatch) => {
+        try {
+            const result = await workoutService.updateExercise(workoutId, updatedExercise);
+            if (result) {
+                dispatch(updateExerciseState({ workoutId, exercise: result }));
             }
         }
         catch (error) {

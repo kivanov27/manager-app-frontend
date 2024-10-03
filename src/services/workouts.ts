@@ -108,8 +108,9 @@ const update = async (id: string, updatedWorkout: Workout) => {
 };
 
 const updateExercise = async (workoutId: string, exercise: Exercise) => {
+    // make sure this works correct, might need to change receive type
     try {
-        const response = await axios.put<Workout>(`${apiBaseUrl}/workouts/${workoutId}/exercises/${exercise.id}`, exercise);
+        const response = await axios.put<Exercise>(`${apiBaseUrl}/workouts/${workoutId}/exercises/${exercise.id}`, exercise);
         return response.data;
     }
     catch (error: unknown) {
