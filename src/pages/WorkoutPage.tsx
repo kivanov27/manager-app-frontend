@@ -113,7 +113,17 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                                         <TextField id="txt-reps" variant="outlined" size="small" className="w-20" />
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
-                                        <TextField id="txt-duration" variant="outlined" size="small" className="w-20" />
+                                        <TextField 
+                                            id="txt-duration" 
+                                            variant="outlined" 
+                                            size="small" 
+                                            className="w-20"
+                                            slotProps={{
+                                                input: {
+                                                    endAdornment: <InputAdornment position="end" sx={{}}>min</InputAdornment>
+                                                },
+                                            }}
+                                        />
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
                                         <TextField 

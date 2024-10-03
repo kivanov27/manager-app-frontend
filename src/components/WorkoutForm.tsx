@@ -42,7 +42,7 @@ const WorkoutForm = forwardRef(({ onSubmit, workoutToEdit, isEditMode = false }:
                 <Typography id="modal-workout-form-title" variant="h6" component="h2" className="text-center">
                     {isEditMode ? "Edit Workout" : "Create Workout"}
                 </Typography>
-                <TextField required id="txt-title" label="Title" variant="outlined" onChange={({ target }) => setTitle(target.value)} />
+                <TextField required id="txt-title" label="Title" value={title} variant="outlined" onChange={({ target }) => setTitle(target.value)} />
                 <FormControl fullWidth>
                     <InputLabel id="select-day-label">Day</InputLabel>
                     <Select 

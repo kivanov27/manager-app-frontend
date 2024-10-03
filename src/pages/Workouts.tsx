@@ -52,11 +52,13 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
                             if (workout.day === day) {
                                 return (
                                     <div key={workout.id} className="flex gap-2">
-                                        <Button variant="outlined" className="w-full text-center p-1">
-                                            <Link to={`/workouts/${workout.id}`}>
-                                                {workout.title}
-                                            </Link>
-                                        </Button>
+                                        <Link 
+                                            to={`/workouts/${workout.id}`}
+                                            className="w-full text-center p-1 border border-[#dbd0d0] border-opacity-50 rounded-[0.25rem] hover:border-opacity-100
+                                            transition ease-in-out duration-[250ms] bg-white bg-opacity-0 hover:bg-opacity-[0.02]"
+                                        >
+                                            {workout.title}
+                                        </Link>
                                         <Button variant="outlined" className="w-10" onClick={() => editWorkout(workout)}>
                                             <EditIcon />
                                         </Button>

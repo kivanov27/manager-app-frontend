@@ -25,11 +25,10 @@ const workoutSlice = createSlice({
                 workout.exercises.push(addedExercise);
             }
         },
-        updateWorkoutState(state, action: PayloadAction<Workout>) {
-            const updatedWorkout = action.payload;
-            const index = state.findIndex(w => w.id === updatedWorkout.id);
+        updateWorkoutState(state, action: PayloadAction<{ id: string, workout: Workout }>) {
+            const index = state.findIndex(w => w.id === action.payload.id);
             if (index !== -1) {
-                state[index] = updatedWorkout;
+                state[index] = action.payload.workout;
             }
         }
     }
@@ -71,7 +70,7 @@ export const updateWorkout = (updatedWorkout: Workout) => {
         try {
             const result = await workoutService.update(updatedWorkout.id, updatedWorkout);
             if (result) {
-                dispatch(updateWorkoutState(result));
+                dispatch(updateWorkoutState({ id: updatedWorkout.id, workout: result}));
             }
         }
         catch (error) {
