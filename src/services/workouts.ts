@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Workout, NewWorkout, NewExercise } from "../types";
+import { Workout, NewWorkout, NewExercise, Exercise } from "../types";
 import { apiBaseUrl } from "../constants";
 
 const getAll = async () => {
@@ -107,5 +107,26 @@ const update = async (id: string, updatedWorkout: Workout) => {
     }
 };
 
-const workoutService = { getAll, getOne, create, createExercise, update };
+const updateExercise = async (workoutId: string, exercise: Exercise) => {
+    try {
+        const response = await axios.put<Workout>(`${apiBaseUrl}/workouts/${workoutId}/exercises/${exercise.id}`, exercise);
+        return response.data;
+    }
+    catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            console.error('AxiosError:', error.response?.data || error.message);
+            throw error;
+        }
+        else if (error instanceof Error) {
+            console.error('Error adding exercise:', error.message);
+            throw error;
+        }
+        else {
+            console.error('Unknown error:', error);
+            throw new Error('An unknown error occurred');
+        }
+    }
+};
+
+const workoutService = { getAll, getOne, create, createExercise, update, updateExercise };
 export default workoutService;

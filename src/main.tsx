@@ -49,6 +49,13 @@ const theme = createTheme({
                 },
             },
         },
+        MuiTypography: {
+            styleOverrides: {
+                root: {
+                    color: '#ffffff',
+                },
+            },
+        },
         MuiInputAdornment: {
             styleOverrides: {
                 root: {

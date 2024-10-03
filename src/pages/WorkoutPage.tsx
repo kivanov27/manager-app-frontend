@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { NewExercise, Workout } from "../types";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Paper, TextField, Button, Modal, InputAdornment } from "@mui/material";
-import ExerciseForm from "../components/ExerciseForm";
 import { useAppDispatch } from "../hooks";
 import { addExercise } from "../reducers/workoutReducer";
+import { Exercise, NewExercise, Workout } from "../types";
+import ExerciseForm from "../components/ExerciseForm";
+import { styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Paper, TextField, Button, Modal, InputAdornment } from "@mui/material";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface WorkoutPageProps {
     workout: Workout | null | undefined;
@@ -32,21 +33,32 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const WorkoutPage = ({ workout }: WorkoutPageProps) => {
-
     const [formOpen, setFormOpen] = useState<boolean>(false);
     const [isAddingExercise, setIsAddingExercise] = useState<boolean>(false);
+    const [isEditMode, setIsEditMode] = useState<boolean>(false);
+    const [exerciseToEdit, setExerciseToEdit] = useState<Exercise | null>(null);
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const openForm = () => setFormOpen(true);
+    const openForm = () => {
+        setIsEditMode(false);
+        setExerciseToEdit(null);
+        setFormOpen(true);
+    }
+
     const closeForm = () => setFormOpen(false);
 
     const submitExercise = async (values: NewExercise) => {
         setIsAddingExercise(true);
         if (workout) {
             try {
-                await dispatch(addExercise(workout.id, values));
+                if (isEditMode && exerciseToEdit) {
+                    await dispatch(updateExercise({ ...exerciseToEdit, ...values }));
+                }
+                else {
+                    await dispatch(addExercise(workout.id, values));
+                }
                 closeForm();
             }
             catch (error) {
@@ -58,6 +70,12 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
         }
     };
 
+    const editExercise = (exercise: Exercise) => {
+        setExerciseToEdit(exercise);
+        setIsEditMode(true);
+        setFormOpen(true);
+    };
+
     if (workout === null) {
         return <div>No workout found</div>
     }
@@ -67,84 +85,89 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
     else {
         return(
             <div className="w-full p-6">
-                <ArrowBackIosNewIcon className="cursor-pointer" onClick={() => navigate('/workouts')} />
+                <ArrowBackIosNewIcon className="cursor-pointer float-start" onClick={() => navigate('/workouts')} />
                 <h2 className="text-center text-2xl mb-10">{workout.title}</h2>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} size="small" aria-label='workout details' className='bg-[#474747]'>
-                        <TableHead>
-                            <TableRow>
-                                {[
-                                    "Exercise",
-                                    "Sets",
-                                    "Reps",
-                                    "Duration",
-                                    "Weight",
-                                    "Actual Sets",
-                                    "Actual Reps",
-                                    "Actual Duration",
-                                    "Actual Weight"
-                                ].map((heading, index) => (
-                                    <StyledTableCell
-                                        key={heading}
-                                        align={index >= 5 ? "right" : "left"} // align right for last 4 columns
-                                        sx={index === 5 ? { borderLeft: '1px solid', borderColor: 'black' } : {}}
+                <div className="flex justify-center">
+                    <TableContainer component={Paper} sx={{ minWidth: 650, maxWidth: 1200 }}>
+                        <Table sx={{ minWidth: 650, maxWidth: 1200 }} size="small" aria-label='workout details' className='bg-[#474747]'>
+                            <TableHead>
+                                <TableRow>
+                                    {[
+                                        "Exercise",
+                                        "Sets",
+                                        "Reps",
+                                        "Duration",
+                                        "Weight",
+                                        "Actual Sets",
+                                        "Actual Reps",
+                                        "Actual Duration",
+                                        "Actual Weight"
+                                    ].map((heading, index) => (
+                                        <StyledTableCell
+                                            key={heading}
+                                            align={index >= 5 ? "right" : "left"} // align right for last 4 columns
+                                            sx={index === 5 ? { borderLeft: '1px solid', borderColor: 'black' } : {}}
+                                        >
+                                            {heading}
+                                        </StyledTableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {workout.exercises.map(exercise => (
+                                    <StyledTableRow 
+                                        key={exercise.id ?? `temp-${exercise.name}`} 
                                     >
-                                        {heading}
-                                    </StyledTableCell>
+                                        <StyledTableCell component="th" scope="exercise">
+                                            <EditIcon className="cursor-pointer me-2" onClick={() => editExercise(exercise)} />
+                                            {exercise.name || 'Loading...'}
+                                        </StyledTableCell>
+                                        <StyledTableCell>{exercise.sets || '-'}</StyledTableCell>
+                                        <StyledTableCell>{exercise.reps || '-'}</StyledTableCell>
+                                        <StyledTableCell>{exercise.duration || '-'}</StyledTableCell>
+                                        <StyledTableCell>{exercise.weight || '-'}</StyledTableCell>
+                                        <StyledTableCell align="right" sx={{ borderLeft: '1px solid' }}>
+                                            <TextField id="txt-sets" variant="outlined" size="small" className="w-20" />
+                                        </StyledTableCell>
+                                        <StyledTableCell align="right">
+                                            <TextField id="txt-reps" variant="outlined" size="small" className="w-20" />
+                                        </StyledTableCell>
+                                        <StyledTableCell align="right">
+                                            <TextField 
+                                                id="txt-duration" 
+                                                variant="outlined" 
+                                                size="small" 
+                                                className="w-20"
+                                                slotProps={{
+                                                    input: {
+                                                        endAdornment: <InputAdornment position="end" sx={{}}>min</InputAdornment>
+                                                    },
+                                                }}
+                                            />
+                                        </StyledTableCell>
+                                        <StyledTableCell align="right">
+                                            <TextField 
+                                                id="txt-weight"
+                                                variant="outlined" 
+                                                size="small" 
+                                                className="w-20"
+                                                slotProps={{
+                                                    input: {
+                                                        endAdornment: <InputAdornment position="end" sx={{ color: 'white' }}>kg</InputAdornment>,
+                                                    },
+                                                }}
+                                            />
+                                        </StyledTableCell>
+                                    </StyledTableRow>
                                 ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {workout.exercises.map(exercise => (
-                                <StyledTableRow 
-                                    key={exercise.id ?? `temp-${exercise.name}`} 
-                                >
-                                    <StyledTableCell component="th" scope="exercise">
-                                        {exercise.name || 'Loading...'}
-                                    </StyledTableCell>
-                                    <StyledTableCell>{exercise.sets || '-'}</StyledTableCell>
-                                    <StyledTableCell>{exercise.reps || '-'}</StyledTableCell>
-                                    <StyledTableCell>{exercise.duration || '-'}</StyledTableCell>
-                                    <StyledTableCell>{exercise.weight || '-'}</StyledTableCell>
-                                    <StyledTableCell align="right" sx={{ borderLeft: '1px solid' }}>
-                                        <TextField id="txt-sets" variant="outlined" size="small" className="w-20" />
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        <TextField id="txt-reps" variant="outlined" size="small" className="w-20" />
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        <TextField 
-                                            id="txt-duration" 
-                                            variant="outlined" 
-                                            size="small" 
-                                            className="w-20"
-                                            slotProps={{
-                                                input: {
-                                                    endAdornment: <InputAdornment position="end" sx={{}}>min</InputAdornment>
-                                                },
-                                            }}
-                                        />
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        <TextField 
-                                            id="txt-weight" 
-                                            variant="outlined" 
-                                            size="small" 
-                                            className="w-20"
-                                            slotProps={{
-                                                input: {
-                                                    endAdornment: <InputAdornment position="end" sx={{ color: 'white' }}>kg</InputAdornment>,
-                                                },
-                                            }}
-                                        />
-                                    </StyledTableCell>
-                                </StyledTableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <Button variant="outlined" sx={{ marginTop: '1rem', marginRight: '1rem' }} onClick={openForm}>add exercise</Button>
-                <Button variant="contained" sx={{ marginTop: '1rem', color: 'black' }}>record</Button>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+                <div className="flex justify-center">
+                    <Button variant="outlined" sx={{ marginTop: '1rem', marginRight: '1rem', width: 'fit-content' }} onClick={openForm}>add exercise</Button>
+                    <Button variant="contained" sx={{ marginTop: '1rem', color: 'black', width: 'fit-content' }}>record</Button>
+                </div>
 
                 <Modal
                     open={formOpen}
@@ -152,7 +175,11 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                     aria-labelledby="modal-exercise-form-title"
                     aria-describedby="modal-exercise-form-description"
                 >
-                    <ExerciseForm onSubmit={submitExercise} />
+                    <ExerciseForm 
+                        onSubmit={submitExercise}
+                        exerciseToEdit={exerciseToEdit}
+                        isEditMode={isEditMode}
+                    />
                 </Modal>
             </div>
         );
