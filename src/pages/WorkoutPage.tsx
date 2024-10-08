@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks";
-import { addExercise } from "../reducers/workoutReducer";
+import { addExercise, updateExercise, deleteExercise } from "../reducers/workoutReducer";
 import { Exercise, NewExercise, Workout } from "../types";
 import ExerciseForm from "../components/ExerciseForm";
 import { styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Paper, TextField, Button, Modal, InputAdornment } from "@mui/material";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 interface WorkoutPageProps {
     workout: Workout | null | undefined;
@@ -54,7 +55,7 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
         if (workout) {
             try {
                 if (isEditMode && exerciseToEdit) {
-                    await dispatch(updateExercise({ ...exerciseToEdit, ...values }));
+                    await dispatch(updateExercise(workout.id, { ...exerciseToEdit, ...values }));
                 }
                 else {
                     await dispatch(addExercise(workout.id, values));
@@ -74,6 +75,12 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
         setExerciseToEdit(exercise);
         setIsEditMode(true);
         setFormOpen(true);
+    };
+
+    const removeExercise = (exerciseId: string) => {
+        if (workout) {
+            dispatch(deleteExercise(workout.id, exerciseId));
+        }
     };
 
     if (workout === null) {
@@ -120,6 +127,7 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                                     >
                                         <StyledTableCell component="th" scope="exercise">
                                             <EditIcon className="cursor-pointer me-2" onClick={() => editExercise(exercise)} />
+                                            <DeleteForeverIcon className="cursor-pointer me-2" onClick={() => removeExercise(exercise.id)} />
                                             {exercise.name || 'Loading...'}
                                         </StyledTableCell>
                                         <StyledTableCell>{exercise.sets || '-'}</StyledTableCell>

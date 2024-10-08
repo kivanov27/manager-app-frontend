@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useAppDispatch } from "../hooks";
-import { createWorkout, updateWorkout } from "../reducers/workoutReducer";
+import { createWorkout, updateWorkout, deleteWorkout } from "../reducers/workoutReducer";
 import { Days, NewWorkout, Workout } from "../types";
 import WorkoutForm from "../components/WorkoutForm";
 import { Button, Divider, Modal } from "@mui/material";
 import { Link } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 interface WorkoutsProps {
     workouts: Workout[];
@@ -42,6 +43,10 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
         setFormOpen(true);
     };
 
+    const removeWorkout = (workout: Workout) => {
+        dispatch(deleteWorkout(workout.id));
+    };
+
     return (
         <div className="w-full px-8 py-4">
             <ul>
@@ -61,6 +66,9 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
                                         </Link>
                                         <Button variant="outlined" className="w-10" onClick={() => editWorkout(workout)}>
                                             <EditIcon />
+                                        </Button>
+                                        <Button variant="outlined" className="w-10" onClick={() => removeWorkout(workout)}>
+                                            <DeleteForeverIcon />
                                         </Button>
                                     </div>
                                 )

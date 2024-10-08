@@ -18,6 +18,15 @@ const workoutSlice = createSlice({
                 state.push(action.payload);
             }
         },
+        updateWorkoutState(state, action: PayloadAction<{ id: string, workout: Workout }>) {
+            const index = state.findIndex(w => w.id === action.payload.id);
+            if (index !== -1) {
+                state[index] = action.payload.workout;
+            }
+        },
+        removeWorkout(state, action: PayloadAction<string>) {
+            return state.filter(w => w.id !== action.payload);
+        },
         appendExercise(state, action: PayloadAction<{workoutId: string, addedExercise: Exercise}>) {
             const { workoutId, addedExercise } = action.payload;
             const workout = state.find(w => w.id === workoutId);
@@ -25,19 +34,32 @@ const workoutSlice = createSlice({
                 workout.exercises.push(addedExercise);
             }
         },
-        updateWorkoutState(state, action: PayloadAction<{ id: string, workout: Workout }>) {
-            const index = state.findIndex(w => w.id === action.payload.id);
-            if (index !== -1) {
-                state[index] = action.payload.workout;
+        updateExerciseState(state, action: PayloadAction<{ workoutId: string, exercises: Exercise[] }>) {
+            const { workoutId, exercises } = action.payload;
+            const workout = state.find(w => w.id === workoutId);
+            if (workout) {
+                workout.exercises = exercises;
             }
         },
-        updateExerciseState(_state, _action: PayloadAction<{ workoutId: string, exercise: Exercise }>) {
-            // write this function
+        removeExercise(state, action: PayloadAction<{ workoutId: string, exerciseId: string}>) {
+            const { workoutId, exerciseId } = action.payload;
+            const workout = state.find(w => w.id === workoutId);
+            if (workout) {
+                workout.exercises = workout.exercises.filter(e => e.id !== exerciseId);
+            }
         }
     }
 });
 
-export const { setWorkouts, appendWorkout, appendExercise, updateWorkoutState, updateExerciseState } = workoutSlice.actions;
+export const { 
+    setWorkouts, 
+    appendWorkout, 
+    updateWorkoutState, 
+    removeWorkout,
+    appendExercise, 
+    updateExerciseState,
+    removeExercise
+} = workoutSlice.actions;
 
 export const initializeWorkouts = () => {
     return async (dispatch: AppDispatch) => {
@@ -50,6 +72,34 @@ export const createWorkout = (data: NewWorkout) => {
     return async (dispatch: AppDispatch) => {
         const newWorkout = await workoutService.create(data);
         dispatch(appendWorkout(newWorkout));
+    };
+};
+
+export const updateWorkout = (updatedWorkout: Workout) => {
+    return async (dispatch: AppDispatch) => {
+        try {
+            const workout = await workoutService.update(updatedWorkout.id, updatedWorkout);
+            if (workout) {
+                dispatch(updateWorkoutState({ id: updatedWorkout.id, workout }));
+            }
+        }
+        catch (error) {
+            console.error('Failed to update:', error);
+            throw error;
+        }
+    };
+};
+
+export const deleteWorkout = (workoutId: string) => {
+    return async (dispatch: AppDispatch) => {
+        try {
+            await workoutService.remove(workoutId);
+            dispatch(removeWorkout(workoutId));
+        }
+        catch (error) {
+            console.error('Failed to delete workout:', error);
+            throw error;
+        }
     };
 };
 
@@ -68,12 +118,12 @@ export const addExercise = (workoutId: string, data: NewExercise) => {
     };
 };
 
-export const updateWorkout = (updatedWorkout: Workout) => {
+export const updateExercise = (workoutId: string, updatedExercise: Exercise) => {
     return async (dispatch: AppDispatch) => {
         try {
-            const result = await workoutService.update(updatedWorkout.id, updatedWorkout);
-            if (result) {
-                dispatch(updateWorkoutState({ id: updatedWorkout.id, workout: result}));
+            const workout = await workoutService.updateExercise(workoutId, updatedExercise);
+            if (workout) {
+                dispatch(updateExerciseState({ workoutId, exercises: workout.exercises }));
             }
         }
         catch (error) {
@@ -83,17 +133,14 @@ export const updateWorkout = (updatedWorkout: Workout) => {
     };
 };
 
-export const updateExercise = (workoutId: string, updatedExercise: Exercise) => {
-    // make sure this works
+export const deleteExercise = (workoutId: string, exerciseId: string) => {
     return async (dispatch: AppDispatch) => {
         try {
-            const result = await workoutService.updateExercise(workoutId, updatedExercise);
-            if (result) {
-                dispatch(updateExerciseState({ workoutId, exercise: result }));
-            }
+            await workoutService.removeExercise(workoutId, exerciseId);
+            dispatch(removeExercise({ workoutId, exerciseId }));
         }
         catch (error) {
-            console.error('Failed to update:', error);
+            console.error('Failed to delete exercise:', error);
             throw error;
         }
     };
