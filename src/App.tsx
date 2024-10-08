@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { Routes, Route, useMatch } from "react-router-dom";
 import { initializeWorkouts, selectWorkouts } from "./reducers/workoutReducer";
+import { selectWorkoutRecords } from "./reducers/workoutRecordReducer";
 import SideNav from "./components/SideNav";
 import Home from "./pages/Home";
 import Workouts from "./pages/Workouts";
@@ -13,6 +14,7 @@ import WorkoutPage from "./pages/WorkoutPage";
 const App = () => {
     const dispatch = useAppDispatch();
     const workouts = useAppSelector(selectWorkouts);
+    const workoutRecords = useAppSelector(selectWorkoutRecords);
 
     const match = useMatch('/workouts/:id');
     const workout = match ? workouts.find(workout => workout.id === match.params.id) : null;
@@ -27,7 +29,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/workouts" element={<Workouts workouts={workouts} />} />
-                <Route path="/workout-tracker" element={<WorkoutTracker />} />
+                <Route path="/workout-tracker" element={<WorkoutTracker workoutRecords={workoutRecords} />} />
                 <Route path="/habits" element={<Habits />} />
                 <Route path="/timetable" element={<Timetable />} />
                 <Route path="/workouts/:id" element={<WorkoutPage workout={workout} />} />

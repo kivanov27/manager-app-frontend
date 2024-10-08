@@ -15,15 +15,18 @@ export interface Workout {
     exercises: Exercise[];
 }
 
-export type NewWorkout = Omit<Workout, 'id'>;
+export interface NewWorkout {
+    title: string;
+    day: Days;
+    exercises: NewExercise[];
+}
 
 export interface Exercise {
-    id: string;
+    id?: string;
     name: string;
     sets?: string;
     reps?: string;
     duration?: string;
-    description?: string;
     weight?: string;
 }
 
