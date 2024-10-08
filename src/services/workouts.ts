@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Workout, NewWorkout, NewExercise, Exercise } from "../types";
 import { apiBaseUrl } from "../constants";
+import { checkError } from "../utils";
 
 const getAll = async () => {
     try {
@@ -8,18 +9,7 @@ const getAll = async () => {
         return data;
     }
     catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-            console.error('AxiosError:', error.response?.data || error.message);
-            throw error;
-        }
-        else if (error instanceof Error) {
-            console.error('Error getting workouts:', error.message);
-            throw error;
-        }
-        else {
-            console.error('Unknown error:', error);
-            throw new Error('An unknown error occurred');
-        }
+        checkError(error);
     }
 };
 
@@ -29,18 +19,7 @@ const getOne = async (id: string) => {
         return data;
     }
     catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-            console.error('AxiosError:', error.response?.data || error.message);
-            throw error;
-        }
-        else if (error instanceof Error) {
-            console.error('Error getting workout:', error.message);
-            throw error;
-        }
-        else {
-            console.error('Unknown error:', error);
-            throw new Error('An unknown error occurred');
-        }
+        checkError(error);
     }
 };
 
@@ -50,18 +29,7 @@ const create = async (object: NewWorkout) => {
         return data;
     }
     catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-            console.error('AxiosError:', error.response?.data || error.message);
-            throw error;
-        }
-        else if (error instanceof Error) {
-            console.error('Error creating workout:', error.message);
-            throw error;
-        }
-        else {
-            console.error('Unknown error:', error);
-            throw new Error('An unknown error occurred');
-        }
+        checkError(error);
     }
 };
 
@@ -71,18 +39,7 @@ const update = async (id: string, updatedWorkout: Workout) => {
         return response.data;
     }
     catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-            console.error('AxiosError:', error.response?.data || error.message);
-            throw error;
-        }
-        else if (error instanceof Error) {
-            console.error('Error adding exercise:', error.message);
-            throw error;
-        }
-        else {
-            console.error('Unknown error:', error);
-            throw new Error('An unknown error occurred');
-        }
+        checkError(error);
     }
 };
 
@@ -91,18 +48,7 @@ const remove = async (id: string) => {
         await axios.delete(`${apiBaseUrl}/workouts/${id}`);
     }
     catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-            console.error('AxiosError:', error.response?.data || error.message);
-            throw error;
-        }
-        else if (error instanceof Error) {
-            console.error('Error deleting workout:', error.message);
-            throw error;
-        }
-        else {
-            console.error('Unknown error:', error);
-            throw new Error('An unknown error occurred');
-        }
+        checkError(error);
     }
 };
 
@@ -112,18 +58,7 @@ const createExercise = async (workoutId: string, object: NewExercise) => {
         return data.exercises.pop();
     }
     catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-            console.error('AxiosError:', error.response?.data || error.message);
-            throw error;
-        }
-        else if (error instanceof Error) {
-            console.error('Error adding exercise:', error.message);
-            throw error;
-        }
-        else {
-            console.error('Unknown error:', error);
-            throw new Error('An unknown error occurred');
-        }
+        checkError(error);
     }
 };
 
@@ -133,18 +68,7 @@ const updateExercise = async (workoutId: string, exercise: Exercise) => {
         return response.data;
     }
     catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-            console.error('AxiosError:', error.response?.data || error.message);
-            throw error;
-        }
-        else if (error instanceof Error) {
-            console.error('Error adding exercise:', error.message);
-            throw error;
-        }
-        else {
-            console.error('Unknown error:', error);
-            throw new Error('An unknown error occurred');
-        }
+        checkError(error);
     }
 };
 
@@ -154,18 +78,7 @@ const removeExercise = async (workoutId: string, exerciseId: string) => {
         return response.data;
     }
     catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-            console.error('AxiosError:', error.response?.data || error.message);
-            throw error;
-        }
-        else if (error instanceof Error) {
-            console.error('Error deleting exercise:', error.message);
-            throw error;
-        }
-        else {
-            console.error('Unknown error:', error);
-            throw new Error('An unknown error occurred');
-        }
+        checkError(error);
     }
 }
 

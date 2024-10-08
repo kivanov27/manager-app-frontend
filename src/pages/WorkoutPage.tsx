@@ -83,6 +83,10 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
         }
     };
 
+    const recordWorkout = () => {
+        // record workout
+    }
+
     if (workout === null) {
         return <div>No workout found</div>
     }
@@ -135,27 +139,27 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                                         <StyledTableCell>{exercise.duration || '-'}</StyledTableCell>
                                         <StyledTableCell>{exercise.weight || '-'}</StyledTableCell>
                                         <StyledTableCell align="right" sx={{ borderLeft: '1px solid' }}>
-                                            <TextField id="txt-sets" variant="outlined" size="small" className="w-20" />
+                                            <TextField id={`txt-sets-${exercise.id}`} variant="outlined" size="small" className="w-20" />
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
-                                            <TextField id="txt-reps" variant="outlined" size="small" className="w-20" />
+                                            <TextField id={`txt-reps-${exercise.id}`} variant="outlined" size="small" className="w-20" />
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
                                             <TextField 
-                                                id="txt-duration" 
+                                                id={`txt-duration-${exercise.id}`} 
                                                 variant="outlined" 
                                                 size="small" 
                                                 className="w-20"
                                                 slotProps={{
                                                     input: {
-                                                        endAdornment: <InputAdornment position="end" sx={{}}>min</InputAdornment>
+                                                        endAdornment: <InputAdornment position="end">min</InputAdornment>
                                                     },
                                                 }}
                                             />
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
                                             <TextField 
-                                                id="txt-weight"
+                                                id={`txt-weight-${exercise.id}`}
                                                 variant="outlined" 
                                                 size="small" 
                                                 className="w-20"
@@ -174,7 +178,7 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                 </div>
                 <div className="flex justify-center">
                     <Button variant="outlined" sx={{ marginTop: '1rem', marginRight: '1rem', width: 'fit-content' }} onClick={openForm}>add exercise</Button>
-                    <Button variant="contained" sx={{ marginTop: '1rem', color: 'black', width: 'fit-content' }}>record</Button>
+                    <Button variant="contained" sx={{ marginTop: '1rem', color: 'black', width: 'fit-content' }} onClick={recordWorkout}>record</Button>
                 </div>
 
                 <Modal
