@@ -33,9 +33,9 @@ export interface Exercise {
 export type NewExercise = Omit<Exercise, 'id'>;
 
 export interface WorkoutRecord extends Workout {
-    date: Date;
+    date: string;
 }
 
 export interface NewWorkoutRecord extends NewWorkout {
-    date: Date;
+    date: string;
 }

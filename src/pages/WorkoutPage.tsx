@@ -9,6 +9,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { createWorkoutRecord } from "../reducers/workoutRecordReducer";
+import { customDateFormat } from "../utils";
 
 interface WorkoutPageProps {
     workout: Workout | null | undefined;
@@ -87,6 +88,7 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
     const recordWorkout = () => {
         if (workout) {
             const exercises = [];
+            const date = new Date();
 
             for (let i = 0; i < workout.exercises.length; i++) {
                 const sets = (document.getElementById(`txt-sets-${workout.exercises[i].id}`) as HTMLInputElement)?.value;
@@ -108,7 +110,7 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
             const workoutToRecord: NewWorkoutRecord = {
                 title: workout.title,
                 day: workout.day,
-                date: new Date(),
+                date: customDateFormat(date),
                 exercises
             };
 

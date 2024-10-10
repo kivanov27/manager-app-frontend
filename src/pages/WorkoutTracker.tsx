@@ -16,7 +16,7 @@ const WorkoutTracker = ({ workoutRecords }: WorkoutTrackerProps) => {
             {workoutRecords.map(workoutRecord => (
                 <div key={workoutRecord.id}>
                     <div>
-                        {workoutRecord.date.toUTCString()} {workoutRecord.title}
+                        {workoutRecord.title} {workoutRecord.date}
                     </div>
                 </div>
             ))}
