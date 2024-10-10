@@ -31,3 +31,11 @@ export interface Exercise {
 }
 
 export type NewExercise = Omit<Exercise, 'id'>;
+
+export interface WorkoutRecord extends Workout {
+    date: Date;
+}
+
+export interface NewWorkoutRecord extends NewWorkout {
+    date: Date;
+}

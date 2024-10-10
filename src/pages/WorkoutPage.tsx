@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks";
 import { addExercise, updateExercise, deleteExercise } from "../reducers/workoutReducer";
-import { Exercise, NewExercise, Workout, NewWorkout } from "../types";
+import { Exercise, NewExercise, Workout, NewWorkoutRecord } from "../types";
 import ExerciseForm from "../components/ExerciseForm";
 import { styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Paper, TextField, Button, Modal, InputAdornment } from "@mui/material";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -105,13 +105,12 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
                 exercises.push(exercise);
             }
 
-            const workoutToRecord: NewWorkout = {
+            const workoutToRecord: NewWorkoutRecord = {
                 title: workout.title,
                 day: workout.day,
+                date: new Date(),
                 exercises
             };
-
-            console.log(workoutToRecord);
 
             dispatch(createWorkoutRecord(workoutToRecord));
             navigate('/workouts');

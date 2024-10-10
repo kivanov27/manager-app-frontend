@@ -12,9 +12,6 @@ import Timetable from "./pages/Timetable";
 import WorkoutPage from "./pages/WorkoutPage";
 
 const App = () => {
-
-    console.log(typeof new Date().toLocaleDateString());
-
     const dispatch = useAppDispatch();
     const workouts = useAppSelector(selectWorkouts);
     const workoutRecords = useAppSelector(selectWorkoutRecords);

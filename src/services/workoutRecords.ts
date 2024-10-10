@@ -1,11 +1,11 @@
 import axios from "axios";
-import { Workout, NewWorkout } from "../types";
+import { WorkoutRecord, NewWorkoutRecord } from "../types";
 import { apiBaseUrl } from "../constants";
 import { checkError } from "../utils";
 
 const getAll = async () => {
     try {
-        const { data } = await axios.get<Workout[]>(`${apiBaseUrl}/workoutRecords`);
+        const { data } = await axios.get<WorkoutRecord[]>(`${apiBaseUrl}/workoutRecords`);
         return data;
     }
     catch (error: unknown) {
@@ -15,7 +15,7 @@ const getAll = async () => {
 
 const getOne = async (id: string) => {
     try {
-        const { data } = await axios.get<Workout>(`${apiBaseUrl}/workoutRecords/${id}`);
+        const { data } = await axios.get<WorkoutRecord>(`${apiBaseUrl}/workoutRecords/${id}`);
         return data;
     }
     catch (error: unknown) {
@@ -23,9 +23,9 @@ const getOne = async (id: string) => {
     }
 };
 
-const create = async (object: NewWorkout) => {
+const create = async (object: NewWorkoutRecord) => {
     try {
-        const { data } = await axios.post<Workout>(`${apiBaseUrl}/workoutRecords`, object);
+        const { data } = await axios.post<WorkoutRecord>(`${apiBaseUrl}/workoutRecords`, object);
         return data;
     }
     catch (error: unknown) {
@@ -33,9 +33,9 @@ const create = async (object: NewWorkout) => {
     }
 };
 
-const update = async (id: string, updatedWorkout: Workout) => {
+const update = async (id: string, updatedWorkout: WorkoutRecord) => {
     try {
-        const { data } = await axios.put<Workout>(`${apiBaseUrl}/workoutRecords/${id}`, updatedWorkout);
+        const { data } = await axios.put<WorkoutRecord>(`${apiBaseUrl}/workoutRecords/${id}`, updatedWorkout);
         return data;
     }
     catch (error: unknown) {

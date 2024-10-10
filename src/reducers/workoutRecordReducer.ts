@@ -1,24 +1,24 @@
 import workoutRecordService from "../services/workoutRecords";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "../store";
-import { NewWorkout, Workout } from "../types";
+import { NewWorkoutRecord, WorkoutRecord } from "../types";
 
-type WorkoutRecordState = Workout[];
+type WorkoutRecordState = WorkoutRecord[];
 const initialState: WorkoutRecordState = [];
 
 const workoutRecordSlice = createSlice({
     name: 'workoutRecords',
     initialState,
     reducers: {
-        setWorkoutRecords(_state, action: PayloadAction<Workout[] | undefined>) {
+        setWorkoutRecords(_state, action: PayloadAction<WorkoutRecord[] | undefined>) {
             return action.payload;
         },
-        appendWorkoutRecord(state, action: PayloadAction<Workout | undefined>) {
+        appendWorkoutRecord(state, action: PayloadAction<WorkoutRecord | undefined>) {
             if (action.payload) {
                 state.push(action.payload);
             }
         },
-        updateWorkoutRecordState(state, action: PayloadAction<{ id: string, workout: Workout }>) {
+        updateWorkoutRecordState(state, action: PayloadAction<{ id: string, workout: WorkoutRecord }>) {
             const index = state.findIndex(w => w.id === action.payload.id);
             if (index !== -1) {
                 state[index] = action.payload.workout;
@@ -44,14 +44,14 @@ export const initializeWorkoutRecords = () => {
     };
 };
 
-export const createWorkoutRecord = (data: NewWorkout) => {
+export const createWorkoutRecord = (data: NewWorkoutRecord) => {
     return async (dispatch: AppDispatch) => {
         const newWorkoutRecord = await workoutRecordService.create(data);
         dispatch(appendWorkoutRecord(newWorkoutRecord));
     };
 };
 
-export const updateWorkoutRecord = (id: string, workoutRecord: Workout) => {
+export const updateWorkoutRecord = (id: string, workoutRecord: WorkoutRecord) => {
     return async (dispatch: AppDispatch) => {
         const updatedWorkoutRecord = await workoutRecordService.update(id, workoutRecord);
         if (updatedWorkoutRecord) {
