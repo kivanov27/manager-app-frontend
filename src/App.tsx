@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { Routes, Route, useMatch } from "react-router-dom";
 import { initializeWorkouts, selectWorkouts } from "./reducers/workoutReducer";
-import { selectWorkoutRecords } from "./reducers/workoutRecordReducer";
+import { initializeWorkoutRecords, selectWorkoutRecords } from "./reducers/workoutRecordReducer";
 import SideNav from "./components/SideNav";
 import Home from "./pages/Home";
 import Workouts from "./pages/Workouts";
@@ -21,6 +21,7 @@ const App = () => {
 
     useEffect(() => {
         dispatch(initializeWorkouts());
+        dispatch(initializeWorkoutRecords());
     }, [dispatch]);
 
     return (

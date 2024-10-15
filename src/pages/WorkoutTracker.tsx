@@ -1,4 +1,4 @@
-//import { useAppDispatch } from "../hooks";
+import { useState } from "react";
 import { WorkoutRecord } from "../types";
 
 interface WorkoutTrackerProps {
@@ -6,18 +6,21 @@ interface WorkoutTrackerProps {
 }
 
 const WorkoutTracker = ({ workoutRecords }: WorkoutTrackerProps) => {
-    //const dispatch = useAppDispatch();
-
-    console.log(workoutRecords);
+    const [show, setShow] = useState<boolean[]>([]);
 
     return (
         <div className="w-full p-6">
             <h1 className="text-center text-2xl mb-10">Workout Tracker</h1>
             {workoutRecords.map(workoutRecord => (
-                <div key={workoutRecord.id}>
-                    <div>
-                        {workoutRecord.title} {workoutRecord.date}
-                    </div>
+                <div key={workoutRecord.id} className="mb-10">
+                    {workoutRecord.title} - {workoutRecord.date}
+                    <ul>
+                        {workoutRecord.exercises.map(exercise => (
+                            <li key={exercise.id} className="list-disc list-inside">
+                                {exercise.name} {exercise.sets ? `${exercise.sets} x ${exercise.reps}` : exercise.duration}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             ))}
         </div>

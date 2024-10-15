@@ -93,8 +93,8 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
             for (let i = 0; i < workout.exercises.length; i++) {
                 const sets = (document.getElementById(`txt-sets-${workout.exercises[i].id}`) as HTMLInputElement)?.value;
                 const reps = (document.getElementById(`txt-reps-${workout.exercises[i].id}`) as HTMLInputElement)?.value;
-                const duration = (document.getElementById(`txt-duration-${workout.exercises[i].id}`) as HTMLInputElement)?.value;
-                const weight = (document.getElementById(`txt-weight-${workout.exercises[i].id}`) as HTMLInputElement)?.value;
+                const duration = (document.getElementById(`txt-duration-${workout.exercises[i].id}`) as HTMLInputElement)?.value + ' min';
+                const weight = (document.getElementById(`txt-weight-${workout.exercises[i].id}`) as HTMLInputElement)?.value + ' kg';
 
                 const exercise: NewExercise = {
                     name: workout.exercises[i].name,
