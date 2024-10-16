@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
+import { useAppDispatch } from "../hooks";
 import { WorkoutRecord } from "../types";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteWorkoutRecord } from "../reducers/workoutRecordReducer";
 
 interface WorkoutTrackerProps {
     workoutRecords: WorkoutRecord[];
@@ -7,6 +10,8 @@ interface WorkoutTrackerProps {
 
 const WorkoutTracker = ({ workoutRecords }: WorkoutTrackerProps) => {
     const [show, setShow] = useState<boolean[]>([]);
+
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         setShow(new Array(workoutRecords.length).fill(false));
@@ -19,19 +24,22 @@ const WorkoutTracker = ({ workoutRecords }: WorkoutTrackerProps) => {
             return newShow;
         });
     };
+
+    const removeRecord = (id: string) => {
+        dispatch(deleteWorkoutRecord(id));
+    };
     
     return (
         <div className="w-full p-6">
             <h1 className="text-center text-2xl mb-10">Workout Tracker</h1>
             {workoutRecords.map((workoutRecord, index) => (
                 <div key={workoutRecord.id} className="mb-10">
-                    <div
-                        className="cursor-pointer flex items-center gap-x-4"
-                        onClick={() => toggleVisibility(index)}
-                    >
+                    <div className="flex items-center gap-x-4">
+                        <DeleteIcon className="cursor-pointer" onClick={() => removeRecord(workoutRecord.id)} />
                         <span>{workoutRecord.date} - {workoutRecord.title}</span>
                         <span
-                            className={`transition ease-in-out duration-[250ms] ${show[index] ? "rotate-0" : "-rotate-90"}`}
+                            className={`cursor-pointer transition ease-in-out duration-[250ms] ${show[index] ? "rotate-0" : "-rotate-90"}`}
+                            onClick={() => toggleVisibility(index)}
                         >
                             ▼
                         </span>
