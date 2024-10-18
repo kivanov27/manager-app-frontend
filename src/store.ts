@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import workoutReducer from "./reducers/workoutReducer";
 import workoutRecordReducer from "./reducers/workoutRecordReducer";
+import habitReducer from "./reducers/habitReducer";
 
 const store = configureStore({
     reducer: {
         workouts: workoutReducer,
-        workoutRecords: workoutRecordReducer
+        workoutRecords: workoutRecordReducer,
+        habits: habitReducer
     }
 });
 
