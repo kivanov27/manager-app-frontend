@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Habit, HabitDay } from '../types';
 import { daysOfWeek } from '../constants';
+import { updateHabit } from '../reducers/habitReducer';
 
 interface HabitProps {
     habits: Habit[];
@@ -34,6 +35,7 @@ const getMonthHeaders = (weeks: HabitDay[][]) => {
 
     weeks.forEach(week => {
         const month = week[0].date.toLocaleString('default', { month: 'long' });
+
         if (month === currentMonth) {
             colSpan++;
         }
@@ -84,7 +86,7 @@ const Habits = ({ habits }: HabitProps) => {
                 const monthHeaders = getMonthHeaders(weeks);
 
                 return (
-                    <div key={habit.id}>
+                    <div key={habit.id} className='mb-10'>
                         <h2 className='text-xl mb-2'>{habit.name}</h2>
                         <div className='flex justify-center'>
                             <TableContainer component={Paper} sx={{ minWidth: 650, maxWidth: 1200 }}>
