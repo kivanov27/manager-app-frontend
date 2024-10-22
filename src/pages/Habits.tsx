@@ -56,6 +56,8 @@ const getMonthHeaders = (weeks: HabitDay[][]) => {
 const Habits = ({ habits }: HabitProps) => {
     const [habitData, setHabitData] = useState<Habit[]>(habits);
 
+    setHabitData(habitData);
+
     return (
         <div className="w-full p-6">
             <h1 className="text-2xl text-center mb-4">Habits</h1>
