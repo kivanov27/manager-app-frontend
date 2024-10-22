@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Habit, HabitDay } from '../types';
 import { daysOfWeek } from '../constants';
@@ -54,15 +54,32 @@ const getMonthHeaders = (weeks: HabitDay[][]) => {
 };
 
 const Habits = ({ habits }: HabitProps) => {
-    const [habitData, setHabitData] = useState<Habit[]>(habits);
+    const [habitData, setHabitData] = useState<Habit[]>();
 
-    setHabitData(habitData);
+    useEffect(() => {
+        setHabitData(habits || []);
+    }, [habits]);
+
+    const toggleHabitDay = (habitId: string, dayIndex: number) => {
+        setHabitData(prevHabits => {
+            if (prevHabits) {
+                prevHabits.map(habit => {
+                    if (habit.id === habitId) {
+                        const updatedDays = habit.days.map((day, index) => index === dayIndex ? { ...day, completed: !day.completed } : day);
+                        return { ...habit, days: updatedDays }
+                    }
+                    return habit;
+                });
+            }
+            return prevHabits;
+        });
+    };
 
     return (
         <div className="w-full p-6">
             <h1 className="text-2xl text-center mb-4">Habits</h1>
 
-            {habitData.map(habit => {
+            {habitData && habitData.map(habit => {
                 const weeks = getWeekDays(habit.days);
                 const monthHeaders = getMonthHeaders(weeks);
 
@@ -94,15 +111,15 @@ const Habits = ({ habits }: HabitProps) => {
                                                         key={weekIndex} 
                                                         align='center'
                                                         sx={{
-                                                            backgroundColor: week[dayIndex].completed ? 'green' : 'lightgray',
+                                                            backgroundColor: week[dayIndex] && week[dayIndex].completed ? 'green' : 'lightgray',
                                                             cursor: 'pointer',
                                                             width: 40,
                                                             height: 40,
                                                             borderRadius: '5px',
                                                         }}
-                                                        onClick={() => {}}
+                                                        onClick={() => week[dayIndex] && toggleHabitDay(habit.id, weekIndex * 7 + dayIndex) }
                                                     >
-                                                        {week[dayIndex].date.getDate()}
+                                                        {week[dayIndex] && week[dayIndex].date instanceof Date ? week[dayIndex].date.getDate() : null}
                                                     </TableCell>
                                                 ))}
                                             </TableRow>
