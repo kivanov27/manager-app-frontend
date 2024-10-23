@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Habit, HabitDay } from '../types';
-import { daysOfWeek } from '../constants';
-import { updateHabit } from '../reducers/habitReducer';
+import { daysOfWeek, monthsOfYear } from '../constants';
+// import { updateHabit } from '../reducers/habitReducer';
 
 interface HabitProps {
     habits: Habit[];
@@ -30,7 +30,8 @@ const getWeekDays = (days: HabitDay[]): HabitDay[][] => {
 
 const getMonthHeaders = (weeks: HabitDay[][]) => {
     const months: { label: string; colSpan: number }[] = [];
-    let currentMonth = '';
+    let currentDay = new Date();
+    let currentMonth = monthsOfYear[currentDay.getMonth()];
     let colSpan = 0;
 
     weeks.forEach(week => {
@@ -111,6 +112,7 @@ const Habits = ({ habits }: HabitProps) => {
                                                 {weeks.map((week, weekIndex) => (
                                                     <TableCell 
                                                         key={weekIndex} 
+                                                        id={weekIndex.toString()}
                                                         align='center'
                                                         sx={{
                                                             backgroundColor: week[dayIndex] && week[dayIndex].completed ? 'green' : 'lightgray',
