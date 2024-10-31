@@ -19,7 +19,8 @@ const Habits = ({ habits }: HabitsProps) => {
     };
 
     return (
-        <div>
+        <div className="w-full p-6">
+            <h1 className="text-2xl text-center mb-10">Habits</h1>
             {habits.map(habit =>
                 <div key={habit.id}>
                     <h2>{habit.name}</h2>
@@ -34,7 +35,7 @@ const Habits = ({ habits }: HabitsProps) => {
                 </div>
             )}
 
-            <Button onClick={openForm}>create habit</Button>
+            <Button variant='outlined' onClick={openForm}>create habit</Button>
 
             <Modal
                 open={formOpen}
