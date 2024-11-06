@@ -10,6 +10,8 @@ interface HabitsProps {
     habits: Habit[];
 }
 
+const weekdays = ['Monday', 'Tueday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 const Habits = ({ habits }: HabitsProps) => {
     const [month, setMonth] = useState<Months>(Months.November);
     const [year, setYear] = useState<number>(2024);
@@ -24,6 +26,30 @@ const Habits = ({ habits }: HabitsProps) => {
         closeForm();
     };
 
+    const generateDays = () => {
+        const today = new Date();
+
+        const day = today.getDate();
+        const month = today.getMonth();
+        const year = today.getFullYear();
+
+        const firstDayOfMonth = new Date(year, month, 1);
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        const dateString = firstDayOfMonth.toLocaleDateString('en-us', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+        });
+        const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
+    };
+
+    const handleMonthChange = (month: Months) => {
+        setMonth(month);
+        console.log(month);
+    };
+
     return (
         <div className="w-full p-6">
             <h1 className="text-2xl text-center mb-10">Habits</h1>
@@ -33,7 +59,11 @@ const Habits = ({ habits }: HabitsProps) => {
                     <div className="w-full flex justify-center gap-x-10 my-4">
                         <div className="flex gap-x-2">
                             <button>◄</button>
-                            <button>{month}</button>
+                            <select name="months" className="bg-gray-700 text-center" onChange={({ target }) => handleMonthChange(target.value as Months)}>
+                                {Object.values(Months).map(month =>
+                                    <option key={month} value={month}>{month}</option>
+                                )}
+                            </select>
                             <button>►</button>
                         </div>
                         <div className="flex gap-x-2">
