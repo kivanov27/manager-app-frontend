@@ -35,16 +35,12 @@ const HabitForm = forwardRef(({ onSubmit }: HabitFormProps, ref) => {
 
     const generateDays = (): HabitDay[] => {
         const today: Date = new Date();
-        let days = [];
+        const days = [];
 
         for (let i: number = 1; i <= today.getMonth() + 1; i++) {
             const daysInMonth = new Date(today.getFullYear(), i, 0).getDate();
 
             for (let j: number = 1; j <= daysInMonth; j++) {
-                if (i === today.getMonth() + 1 && j === today.getDate() + 1) {
-                    break;
-                }
-    
                 days.push({ date: new Date(today.getFullYear(), i - 1, j), completed: false });
             }
         }
@@ -56,8 +52,10 @@ const HabitForm = forwardRef(({ onSubmit }: HabitFormProps, ref) => {
         <Box sx={style} tabIndex={-1} ref={ref}>
             <form onSubmit={addHabit}>
                 <Typography id="modal-habit-form-title" variant="h6" component="h2" className="text-center">Habit Form</Typography>
-                <TextField required id="txt-habit-name" label="Name" value={name} variant="outlined" size="small" onChange={({ target }) => setName(target.value)} />
-                <Button variant="contained" type="submit" sx={{ color: 'black' }}>Submit</Button>
+                <div className="flex items-center justify-center gap-x-3 mt-5">
+                    <TextField required id="txt-habit-name" label="Name" value={name} variant="outlined" size="small" onChange={({ target }) => setName(target.value)} />
+                    <Button variant="contained" type="submit" sx={{ color: 'black' }}>Submit</Button>
+                </div>
             </form>
         </Box>
     );

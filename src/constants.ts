@@ -1,13 +1,13 @@
 export const apiBaseUrl = "http://localhost:3001/api";
 
 export const daysOfWeek = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat",
+  "Sun",
 ];
 
 export const monthsOfYear = [

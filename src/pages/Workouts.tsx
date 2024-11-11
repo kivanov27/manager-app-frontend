@@ -49,7 +49,7 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
 
     return (
         <div className="w-full px-8 py-4">
-            <h1 className="text-2xl text-center mb-10">Workouts</h1>
+            <h1 className="text-3xl text-center mb-10">Workouts</h1>
             <ul>
                 {Object.values(Days).map(day => (
                     <li key={day} className="flex flex-col gap-2 pb-4">
