@@ -32,10 +32,6 @@ const Habits = ({ habits }: HabitsProps) => {
         closeForm();
     };
 
-    const handleMonthChange = (newMonth: number) => {
-        setMonth(newMonth);
-    };
-
     const generateDays = (habit: Habit): ReactNode => {
         if (year && month || year && month === 0) {
             const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -111,15 +107,31 @@ const Habits = ({ habits }: HabitsProps) => {
         await dispatch(deleteHabit(id)); 
     };
 
+    const handleMonthChange = (newMonth: number) => {
+        setMonth(newMonth);
+    };
+
     const prevMonth = () => {
-        if (month) {
+        if (month && month > 0) {
             setMonth(month - 1);
         }
     };
 
     const nextMonth = () => {
-        if (month) {
+        if (month && month < 11 || month === 0) {
             setMonth(month + 1);
+        }
+    };
+
+    const prevYear = () => {
+        if (year && year > 0) {
+            setYear(year - 1);
+        }
+    };
+
+    const nextYear = () => {
+        if (year || year === 0) {
+            setYear(year + 1);
         }
     };
 
@@ -151,9 +163,9 @@ const Habits = ({ habits }: HabitsProps) => {
                                 <button onClick={nextMonth}>►</button>
                             </div>
                             <div className="flex gap-x-2">
-                                <button>◄</button>
+                                <button onClick={prevYear}>◄</button>
                                 <div>{year}</div>
-                                <button>►</button>
+                                <button onClick={nextYear}>►</button>
                             </div>
                         </div>
                         <div className="flex mx-auto w-[350px] mb-3">
