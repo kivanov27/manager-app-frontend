@@ -34,11 +34,10 @@ const Habits = ({ habits }: HabitsProps) => {
 
     const handleMonthChange = (newMonth: number) => {
         setMonth(newMonth);
-        console.log("month:", month);
     };
 
     const generateDays = (habit: Habit): ReactNode => {
-        if (month && year) {
+        if (year && month || year && month === 0) {
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const firstDayOfMonth = new Date(year, month, 1);
 
@@ -49,7 +48,6 @@ const Habits = ({ habits }: HabitsProps) => {
                 day: "numeric",
             });
             const weekday = dateString.split(", ")[0];
-
             const paddingDays = daysOfWeek.indexOf(weekday);
 
             const days: ReactNode[] = [];

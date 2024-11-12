@@ -37,11 +37,11 @@ const HabitForm = forwardRef(({ onSubmit }: HabitFormProps, ref) => {
         const today: Date = new Date();
         const days = [];
 
-        for (let i: number = 1; i <= today.getMonth() + 1; i++) {
-            const daysInMonth = new Date(today.getFullYear(), i, 0).getDate();
+        for (let i: number = 0; i <= today.getMonth() + 1; i++) {
+            const daysInMonth = new Date(today.getFullYear(), i+1, 0).getDate();
 
             for (let j: number = 1; j <= daysInMonth; j++) {
-                days.push({ date: new Date(today.getFullYear(), i - 1, j), completed: false });
+                days.push({ date: new Date(today.getFullYear(), i, j), completed: false });
             }
         }
         
