@@ -130,7 +130,7 @@ const WorkoutPage = ({ workout }: WorkoutPageProps) => {
     }
     else {
         return (
-            <div className="w-full p-6">
+            <div className="w-full">
                 <ArrowBackIosNewIcon className="cursor-pointer float-start" onClick={() => navigate('/workouts')} />
                 <h2 className="text-center text-2xl mb-10">{workout.title}</h2>
                 <div className="flex justify-center">

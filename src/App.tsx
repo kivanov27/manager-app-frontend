@@ -30,14 +30,16 @@ const App = () => {
     return (
         <div className="min-h-screen flex">
             <SideNav />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/workouts" element={<Workouts workouts={workouts} />} />
-                <Route path="/workout-tracker" element={<WorkoutTracker workoutRecords={workoutRecords} />} />
-                <Route path="/habits" element={<Habits habits={habits} />} />
-                <Route path="/timetable" element={<Timetable />} />
-                <Route path="/workouts/:id" element={<WorkoutPage workout={workout} />} />
-            </Routes>
+            <div className="ml-[16.666%] w-5/6 p-6">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/workouts" element={<Workouts workouts={workouts} />} />
+                    <Route path="/workout-tracker" element={<WorkoutTracker workoutRecords={workoutRecords} />} />
+                    <Route path="/habits" element={<Habits habits={habits} />} />
+                    <Route path="/timetable" element={<Timetable />} />
+                    <Route path="/workouts/:id" element={<WorkoutPage workout={workout} />} />
+                </Routes>
+            </div>
         </div>
     );
 };

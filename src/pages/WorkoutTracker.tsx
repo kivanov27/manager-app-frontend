@@ -30,7 +30,7 @@ const WorkoutTracker = ({ workoutRecords }: WorkoutTrackerProps) => {
     };
     
     return (
-        <div className="w-full p-6">
+        <div className="w-full">
             <h1 className="text-center text-3xl mb-10">Workout Tracker</h1>
             {workoutRecords.map((workoutRecord, index) => (
                 <div key={workoutRecord.id} className="mb-10">

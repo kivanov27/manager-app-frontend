@@ -2,10 +2,11 @@ import { ReactNode, useEffect } from "react";
 import { useState } from "react";
 import { useAppDispatch } from "../hooks";
 import { Button, Modal } from "@mui/material";
-import { createHabit, updateHabit } from "../reducers/habitReducer";
+import { createHabit, updateHabit, deleteHabit } from "../reducers/habitReducer";
 import { Habit, NewHabit } from "../types";
 import HabitForm from "../components/HabitForm";
-import { daysOfWeek, monthsOfYear } from "../constants";
+import { daysOfWeek, daysOfWeekShort, monthsOfYear } from "../constants";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface HabitsProps {
     habits: Habit[];
@@ -73,7 +74,7 @@ const Habits = ({ habits }: HabitsProps) => {
                         );
                     }
                 } else {
-                    days.push(<div key={`padding-${i}`} className="w-[100px] h-[100px]" />);
+                    days.push(<div key={`padding-${i}`} className="w-[50px] h-[50px]" />);
                 }
             }
 
@@ -102,14 +103,19 @@ const Habits = ({ habits }: HabitsProps) => {
         }
     };
 
+    const handleDelete = async (id: string) => {
+        await dispatch(deleteHabit(id)); 
+    };
+
     return (
-        <div className="w-full p-6">
+        <div className="w-full">
             <h1 className="text-3xl text-center mb-10">Habits</h1>
             <div className="flex flex-wrap gap-x-36 justify-center mt-20">
                 {habits.map((habit) => (
                     <div key={habit.id} className="mb-10">
-                        <h2 className="capitalize text-center text-xl">
-                            {habit.name}
+                        <h2 className="capitalize text-xl flex items-center justify-center gap-x-4">
+                            {habit.name} 
+                            <DeleteIcon className="cursor-pointer" onClick={() => handleDelete(habit.id)} />
                         </h2>
                         <div className="w-full flex justify-center gap-x-10 my-4">
                             <div className="flex gap-x-2">
@@ -135,7 +141,7 @@ const Habits = ({ habits }: HabitsProps) => {
                             </div>
                         </div>
                         <div className="flex mx-auto w-[350px] mb-3">
-                            {daysOfWeek.map((day) => (
+                            {daysOfWeekShort.map((day) => (
                                 <p key={day} className="w-[50px] text-center">{day}</p>
                             ))}
                         </div>
@@ -146,7 +152,7 @@ const Habits = ({ habits }: HabitsProps) => {
                 ))}
             </div>
             
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-4">
                 <Button variant="outlined" onClick={openForm}>
                     create habit
                 </Button>

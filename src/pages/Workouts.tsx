@@ -48,7 +48,7 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
     };
 
     return (
-        <div className="w-full px-8 py-4">
+        <div className="w-full px-40">
             <h1 className="text-3xl text-center mb-10">Workouts</h1>
             <ul>
                 {Object.values(Days).map(day => (
@@ -79,7 +79,7 @@ const Workouts = ({ workouts }: WorkoutsProps) => {
                     </li>
                 ))}
             </ul>
-            <Button variant="outlined" className="w-fit" onClick={openForm}>+ add workouts</Button>
+            <Button variant="outlined" sx={{ marginTop: '20px' }} className="w-fit" onClick={openForm}>+ add workouts</Button>
 
             <Modal
                 open={formOpen}
