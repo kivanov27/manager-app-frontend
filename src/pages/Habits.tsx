@@ -48,8 +48,9 @@ const Habits = ({ habits }: HabitsProps) => {
                 month: "numeric",
                 day: "numeric",
             });
+            const weekday = dateString.split(", ")[0];
 
-            const paddingDays = daysOfWeek.indexOf(dateString.split(", ")[0]);
+            const paddingDays = daysOfWeek.indexOf(weekday);
 
             const days: ReactNode[] = [];
 
@@ -78,7 +79,12 @@ const Habits = ({ habits }: HabitsProps) => {
                 }
             }
 
-            return days;
+            return (
+                <div className={`mx-auto flex flex-wrap w-[352px] ${weekday === 'Sunday' ? 'h-[300px]' : 'h-[250px]'}`}>
+                    {days}
+                </div>
+            );
+
         }
         else {
             console.log("Month or year is missing.");
@@ -107,6 +113,18 @@ const Habits = ({ habits }: HabitsProps) => {
         await dispatch(deleteHabit(id)); 
     };
 
+    const prevMonth = () => {
+        if (month) {
+            setMonth(month - 1);
+        }
+    };
+
+    const nextMonth = () => {
+        if (month) {
+            setMonth(month + 1);
+        }
+    };
+
     return (
         <div className="w-full">
             <h1 className="text-3xl text-center mb-10">Habits</h1>
@@ -119,7 +137,7 @@ const Habits = ({ habits }: HabitsProps) => {
                         </h2>
                         <div className="w-full flex justify-center gap-x-10 my-4">
                             <div className="flex gap-x-2">
-                                <button>◄</button>
+                                <button onClick={prevMonth}>◄</button>
                                 <select 
                                     name="months" 
                                     value={month} 
@@ -132,7 +150,7 @@ const Habits = ({ habits }: HabitsProps) => {
                                         </option>
                                     ))}
                                 </select>
-                                <button>►</button>
+                                <button onClick={nextMonth}>►</button>
                             </div>
                             <div className="flex gap-x-2">
                                 <button>◄</button>
@@ -145,9 +163,7 @@ const Habits = ({ habits }: HabitsProps) => {
                                 <p key={day} className="w-[50px] text-center">{day}</p>
                             ))}
                         </div>
-                        <div className="mx-auto w-[352px] h-[250px] flex flex-wrap">
-                            {generateDays(habit)}
-                        </div>
+                        {generateDays(habit)}
                     </div>
                 ))}
             </div>
