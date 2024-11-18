@@ -18,8 +18,8 @@ const Timetable = ({ tasks }: TimetableProps) => {
     const closeForm = () => setFormOpen(false);
 
     const submitTask = (values: NewTask) => {
-        console.log('Task values:', values);
         dispatch(createTask(values));
+        closeForm();
     };
 
     return (
