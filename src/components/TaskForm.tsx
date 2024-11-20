@@ -1,9 +1,12 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
-import { NewTask } from "../types";
 import { forwardRef, useState } from "react";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { NewTask, Task } from "../types";
+import { toDate } from "../utils";
 
 interface TaskFormProps {
     onSubmit(values: NewTask): void;
+    taskToEdit?: Task | null;
+    editMode?: boolean;
 }
 
 const style = {
@@ -19,7 +22,12 @@ const style = {
     p: 4,
 };
 
-const TaskForm = forwardRef(({ onSubmit }: TaskFormProps, ref) => {
+const TaskForm = forwardRef(({ onSubmit, taskToEdit, editMode=false }: TaskFormProps, ref) => {
+    if (editMode && taskToEdit) {
+        console.log('start:', taskToEdit.startsAt.getMinutes());
+        console.log('end:', taskToEdit.endsAt.getHours());
+    }
+
     const [start_h, setStart_h] = useState<number>(1);
     const [start_m, setStart_m] = useState<number>(0);
     const [end_h, setEnd_h] = useState<number>(1);
@@ -111,7 +119,9 @@ const TaskForm = forwardRef(({ onSubmit }: TaskFormProps, ref) => {
 
                 <TextField variant="outlined" label="Task" value={task} onChange={({ target }) => setTask(target.value)} />
 
-                <Button variant="contained" type="submit" className="h-12" sx={{ color: 'black' }}>Submit</Button>
+                <Button variant="contained" type="submit" className="h-12" sx={{ color: 'black' }}>
+                    {editMode ? "Save" : "Submit"}
+                </Button>
             </form>
         </Box>
     )

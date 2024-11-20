@@ -45,11 +45,46 @@ const ExerciseForm = forwardRef(({ onSubmit, exerciseToEdit, isEditMode = false 
                 <Typography id="modal-exercise-form-title" variant="h6" component="h2" className="text-center">
                     {isEditMode ? "Edit Exercise" : "Create Exercise"}
                 </Typography>
-                <TextField required id="txt-name" label="Name" value={name} variant="outlined" size="small" onChange={({ target }) => setName(target.value)} />
-                <TextField id="txt-sets" label="Sets" value={sets} variant="outlined" size="small" onChange={({ target }) => setSets(target.value)} />
-                <TextField id="txt-reps" label="Reps" value={reps} variant="outlined" size="small" onChange={({ target }) => setReps(target.value)} />
-                <TextField id="txt-duration" label="Duration" value={duration} variant="outlined" size="small" onChange={({ target }) => setDuration(target.value)} />
-                <TextField id="txt-weight" label="Weight" value={weight} variant="outlined" onChange={({ target }) => setWeight(target.value)} />
+                <TextField 
+                    required 
+                    id="txt-name" 
+                    label="Name" 
+                    value={name} 
+                    variant="outlined" 
+                    size="small" 
+                    onChange={({ target }) => setName(target.value)} 
+                />
+                <TextField 
+                    id="txt-sets" 
+                    label="Sets" 
+                    value={sets} 
+                    variant="outlined" 
+                    size="small" 
+                    onChange={({ target }) => setSets(target.value)} 
+                />
+                <TextField 
+                    id="txt-reps" 
+                    label="Reps" 
+                    value={reps} 
+                    variant="outlined" 
+                    size="small" 
+                    onChange={({ target }) => setReps(target.value)} 
+                />
+                <TextField 
+                    id="txt-duration" 
+                    label="Duration" 
+                    value={duration} 
+                    variant="outlined" 
+                    size="small" 
+                    onChange={({ target }) => setDuration(target.value)} 
+                />
+                <TextField 
+                    id="txt-weight" 
+                    label="Weight" 
+                    value={weight} 
+                    variant="outlined" 
+                    onChange={({ target }) => setWeight(target.value)} 
+                />
                 <Button variant="contained" type="submit" sx={{ color: "black" }}>
                     {isEditMode ? "Save Changes" : "Submit"}
                 </Button>

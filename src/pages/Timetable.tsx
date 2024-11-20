@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useAppDispatch } from "../hooks";
-import { createTask } from "../reducers/taskReducer";
-import { Button, Modal } from "@mui/material";
+import { createTask, updateTask } from "../reducers/taskReducer";
+import { Button, Checkbox, Modal } from "@mui/material";
 import { Task, NewTask } from "../types";
 import { toDate } from "../utils";
 import TaskForm from "../components/TaskForm";
-import { CheckBox } from "@mui/icons-material";
+import { Edit, DeleteForever } from "@mui/icons-material";
 
 interface TimetableProps {
     tasks: Task[];
@@ -14,15 +14,33 @@ interface TimetableProps {
 const Timetable = ({ tasks }: TimetableProps) => {
     const [formOpen, setFormOpen] = useState<boolean>(false);
     const [completed, setCompleted] = useState<boolean[]>(new Array(tasks.length).fill(false));
+    const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
+    const [editMode, setEditMode] = useState<boolean>(false);
 
     const dispatch = useAppDispatch();
 
     const openForm = () => setFormOpen(true);
     const closeForm = () => setFormOpen(false);
 
-    const submitTask = (values: NewTask) => {
-        dispatch(createTask(values));
+    const submitTask = async (values: NewTask) => {
+        if (editMode && taskToEdit) {
+            await dispatch(updateTask(taskToEdit.id, { ...taskToEdit, ...values }));
+        }
+        else {
+            await dispatch(createTask(values));
+        }
         closeForm();
+    };
+
+    const editTask = (task: Task) => {
+        const taskWithDates = {
+            ...task,
+            startsAt: toDate(task.startsAt),
+            endsAt: toDate(task.endsAt)
+        };
+        setTaskToEdit(taskWithDates);
+        setEditMode(true);
+        setFormOpen(true);
     };
 
     return (
@@ -38,12 +56,20 @@ const Timetable = ({ tasks }: TimetableProps) => {
                         <span>{end.slice(0,-6)} {end.slice(-2)}</span>
                         <span>►</span>
                         <span>{task.task}</span>
-                        <CheckBox 
-                            // checked={completed[i]} 
+                        <Checkbox 
+                            checked={completed[i]} 
                             onChange={() => {
                                 const newCompleted = completed.map((value, index) => index === i ? !value : value);
                                 setCompleted(newCompleted);
                             }} 
+                            sx={{ color: 'white' }}
+                        />
+                        <Edit 
+                            className='cursor-pointer'
+                            onClick={() => editTask(task)}
+                        />
+                        <DeleteForever 
+                            className='cursor-pointer'
                         />
                     </div>
                 )
@@ -58,7 +84,11 @@ const Timetable = ({ tasks }: TimetableProps) => {
                 aria-labelledby="modal-task-form-title"
                 aria-describedby="modal-task-form-description"
             >
-                <TaskForm onSubmit={submitTask} />
+                <TaskForm 
+                    onSubmit={submitTask} 
+                    taskToEdit={taskToEdit}
+                    editMode={editMode}
+                />
             </Modal>
         </div>
     );
