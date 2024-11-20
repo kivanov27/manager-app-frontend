@@ -24,3 +24,14 @@ export const customDateFormat = (date: Date): string => {
     
     return `${day}-${month}-${year} ${hours}:${mins}`;
 };
+
+export const toDate = (date: unknown): Date => {
+    if (isString(date)) {
+        return new Date(date);   
+    }
+    throw new Error('date is not a string');
+};
+
+const isString = (text: unknown): text is string => {
+    return typeof text === 'string' || text instanceof String;
+};
