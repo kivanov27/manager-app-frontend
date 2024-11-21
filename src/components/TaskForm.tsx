@@ -1,7 +1,6 @@
 import { forwardRef, useState } from "react";
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { NewTask, Task } from "../types";
-import { toDate } from "../utils";
 
 interface TaskFormProps {
     onSubmit(values: NewTask): void;
@@ -23,16 +22,11 @@ const style = {
 };
 
 const TaskForm = forwardRef(({ onSubmit, taskToEdit, editMode=false }: TaskFormProps, ref) => {
-    if (editMode && taskToEdit) {
-        console.log('start:', taskToEdit.startsAt.getMinutes());
-        console.log('end:', taskToEdit.endsAt.getHours());
-    }
-
-    const [start_h, setStart_h] = useState<number>(1);
-    const [start_m, setStart_m] = useState<number>(0);
-    const [end_h, setEnd_h] = useState<number>(1);
-    const [end_m, setEnd_m] = useState<number>(0);
-    const [task, setTask] = useState<string>('');
+    const [start_h, setStart_h] = useState<number>(taskToEdit ? taskToEdit.startsAt.getHours() : 1);
+    const [start_m, setStart_m] = useState<number>(taskToEdit ? taskToEdit.startsAt.getMinutes() : 0);
+    const [end_h, setEnd_h] = useState<number>(taskToEdit ? taskToEdit.endsAt.getHours() : 1);
+    const [end_m, setEnd_m] = useState<number>(taskToEdit ? taskToEdit.endsAt.getMinutes() : 0);
+    const [task, setTask] = useState<string>(taskToEdit ? taskToEdit.task : '');
 
     const addTask = (e: React.SyntheticEvent) => {
         e.preventDefault();

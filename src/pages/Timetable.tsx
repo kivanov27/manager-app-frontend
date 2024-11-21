@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../hooks";
-import { createTask, updateTask } from "../reducers/taskReducer";
+import { createTask, updateTask, deleteTask } from "../reducers/taskReducer";
 import { Button, Checkbox, Modal } from "@mui/material";
 import { Task, NewTask } from "../types";
 import { toDate } from "../utils";
@@ -19,7 +19,12 @@ const Timetable = ({ tasks }: TimetableProps) => {
 
     const dispatch = useAppDispatch();
 
-    const openForm = () => setFormOpen(true);
+    const openForm = () => {
+        setTaskToEdit(null);
+        setEditMode(false);
+        setFormOpen(true);
+    }
+
     const closeForm = () => setFormOpen(false);
 
     const submitTask = async (values: NewTask) => {
@@ -42,6 +47,10 @@ const Timetable = ({ tasks }: TimetableProps) => {
         setEditMode(true);
         setFormOpen(true);
     };
+
+    const removeTask = (id: string) => {
+        dispatch(deleteTask(id));
+    }
 
     return (
         <div className="w-full">
@@ -70,6 +79,7 @@ const Timetable = ({ tasks }: TimetableProps) => {
                         />
                         <DeleteForever 
                             className='cursor-pointer'
+                            onClick={() => removeTask(task.id)}
                         />
                     </div>
                 )
