@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import User from './User';
 
 const SideNav = () => {
     return (
@@ -9,10 +10,7 @@ const SideNav = () => {
                 <Link to='/habits'>habits</Link>
                 <Link to='/timetable'>timetable</Link>
             </div>
-            <div className="flex flex-col items-center gap-y-2">
-                <p>img</p>
-                <p>acc name</p>
-            </div>
+            <User />
         </div>
     );
 };
